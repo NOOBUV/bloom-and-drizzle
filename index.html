@@ -5,7 +5,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--ui:#fff8f0ee;--g:#fff8f0dd;--gb:rgba(255,255,255,.35);--t:#4a3728;--tl:#8a7a68;--ac:#e8a87c;--ac2:#85c88a;--ac3:#c490d1;--dn:#e07070;--sh:0 4px 14px rgba(60,40,20,.15);--st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px)}
-html,body{font-family:'Fredoka',sans-serif;background:#2a2035;color:var(--t);overflow:hidden;width:100%;height:100%;position:fixed;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none}
+html,body{font-family:'Fredoka',sans-serif;background:#2a2035;color:var(--t);overflow:hidden;width:100%;height:100%;position:fixed;touch-action:none;-webkit-tap-highlight-color:transparent;user-select:none}
 canvas{position:fixed;top:0;left:0;width:100%;height:100%}
 #rc{z-index:1;pointer-events:none}#gc{z-index:0}
 .ui{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10;pointer-events:none}.ui>*{pointer-events:auto}
@@ -15,21 +15,18 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%}
 .dock{position:absolute;bottom:calc(8px + var(--sb));left:50%;transform:translateX(-50%);display:flex;gap:3px;z-index:20;flex-wrap:wrap;justify-content:center;max-width:calc(100% - 16px)}
 .db{background:var(--g);backdrop-filter:blur(12px);border:1.5px solid var(--gb);border-radius:14px;padding:8px 10px;font-weight:500;font-size:11px;cursor:pointer;display:flex;align-items:center;gap:4px;box-shadow:var(--sh);transition:all .12s;color:var(--t);min-width:42px;min-height:42px;justify-content:center}
 .db:active{transform:scale(.93)}.em{font-size:16px;font-style:normal}
-/* Panels */
 .po{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(40,30,50,.5);backdrop-filter:blur(3px);z-index:50;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}.po.on{opacity:1;pointer-events:auto}
 .pn{background:var(--ui);border:1.5px solid var(--gb);border-radius:22px 22px 0 0;padding:20px 16px calc(20px + var(--sb));max-width:540px;width:100%;max-height:85vh;overflow-y:auto;-webkit-overflow-scrolling:touch;box-shadow:0 -8px 30px rgba(40,20,10,.2);transform:translateY(100%);transition:transform .25s}.po.on .pn{transform:translateY(0)}
 .pn::-webkit-scrollbar{width:4px}.pn::-webkit-scrollbar-thumb{background:rgba(180,160,140,.3);border-radius:2px}
 .ph{width:34px;height:4px;background:rgba(180,160,140,.3);border-radius:2px;margin:0 auto 12px}
 .pn h2{font-weight:700;font-size:18px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
 .pc{position:absolute;top:12px;right:14px;background:rgba(180,160,140,.2);border:none;border-radius:50%;width:32px;height:32px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--tl)}.pc:active{background:rgba(180,160,140,.4)}
-/* Grid items */
 .sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:6px}
 .si{background:rgba(255,255,255,.6);border:1.5px solid rgba(200,180,160,.3);border-radius:12px;padding:9px 6px;text-align:center;cursor:pointer;transition:all .12s;min-height:42px}
 .si:active{transform:scale(.96);border-color:var(--ac)}.si .fi{font-size:24px;display:block;margin-bottom:2px}.si .fn{font-weight:600;font-size:11px}.si .fc{font-size:10px;color:#b8860b;margin-top:1px}.si .ft{font-size:9px;color:var(--tl)}
 .rt{font-size:8px;padding:1px 5px;border-radius:7px;display:inline-block;margin-top:1px}
 .rt.common{background:#e8f0e0;color:#5a7a40}.rt.uncommon{background:#e0e8f0;color:#4060a0}.rt.rare{background:#f0e0f0;color:#8040a0}.rt.epic{background:#f0e0e8;color:#a04080}.rt.legendary{background:#f8f0d0;color:#a08020}
 .si.locked{opacity:.3;pointer-events:none}
-/* Inventory, orders, tools */
 .ig{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0}
 .ii{background:rgba(255,255,255,.5);border:1.5px solid rgba(200,180,160,.3);border-radius:10px;padding:5px 8px;display:flex;align-items:center;gap:5px;font-size:12px}.ii .ct{font-weight:700;color:var(--ac)}
 .oc{background:rgba(255,255,255,.5);border:1.5px solid rgba(200,180,160,.3);border-radius:12px;padding:10px;margin-bottom:6px;position:relative}
@@ -38,49 +35,40 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%}
 .tc{background:rgba(255,255,255,.5);border:1.5px solid rgba(200,180,160,.3);border-radius:12px;padding:10px;margin-bottom:6px;display:flex;align-items:center;gap:10px}
 .tc .ti{font-size:24px}.tc .tinf{flex:1}.tc .tn{font-weight:600;font-size:13px}.tc .td{font-size:10px;color:var(--tl)}.tc .tl{font-size:9px;color:var(--ac3);font-weight:600}
 .ub{background:var(--ac);color:white;border:none;border-radius:10px;padding:7px 12px;font-weight:600;font-size:11px;cursor:pointer;min-height:34px;font-family:'Fredoka'}.ub:active{transform:scale(.96)}.ub:disabled{opacity:.4}.ub.mx{background:var(--ac2)}
-/* Bouquet */
 .bs{display:flex;gap:5px;justify-content:center;margin:10px 0;flex-wrap:wrap}
 .bsl{width:48px;height:48px;background:rgba(255,255,255,.4);border:2px dashed rgba(180,160,140,.4);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;min-width:42px;min-height:42px}
 .bsl.filled{border-style:solid;border-color:var(--ac2);background:rgba(230,250,230,.5)}
 .br{text-align:center;padding:10px;background:rgba(255,255,255,.4);border-radius:12px;margin-top:6px}
 .br .price{font-weight:700;font-size:17px;color:#b8860b}
 .br .rm{color:var(--ac3);font-weight:700}
-/* Cat meters */
 .cat-card{background:linear-gradient(135deg,rgba(255,240,220,.8),rgba(255,220,200,.6));border:1.5px solid rgba(240,168,64,.3);border-radius:13px;padding:10px;margin-bottom:8px;display:flex;align-items:center;gap:10px}
 .meter{width:100%;height:6px;background:rgba(0,0,0,.1);border-radius:3px;overflow:hidden;margin:2px 0}
 .meter-fill{height:100%;border-radius:3px;transition:width .4s}
 .mh .meter-fill{background:linear-gradient(90deg,#e07070,#f0a060)}.mp .meter-fill{background:linear-gradient(90deg,#f0c040,#f080a0)}.mt .meter-fill{background:linear-gradient(90deg,#80b0f0,#a080e0)}
 .cat-food{display:flex;align-items:center;gap:8px;padding:7px;border-radius:10px;cursor:pointer;background:rgba(255,255,255,.5);margin-bottom:4px}.cat-food:active{background:rgba(255,220,180,.6)}
 .cat-acc{display:inline-flex;align-items:center;gap:4px;padding:5px 9px;border-radius:10px;cursor:pointer;background:rgba(255,255,255,.5);margin:2px;font-size:11px;border:1.5px solid transparent}.cat-acc.eq{background:rgba(133,200,138,.3);border-color:var(--ac2)}.cat-acc:active{transform:scale(.95)}
-/* Achievements */
 .ach{display:flex;align-items:center;gap:7px;padding:7px;border-radius:11px;margin-bottom:4px}
 .ach.done{background:rgba(255,240,200,.5);border:1px solid rgba(240,200,80,.3)}.ach.todo{background:rgba(200,200,200,.1);opacity:.6}
-/* Seed select */
 .ss{position:fixed;z-index:55;background:var(--ui);border-radius:20px 20px 0 0;padding:14px;padding-bottom:calc(14px + var(--sb));box-shadow:0 -6px 24px rgba(40,20,10,.2);bottom:0;left:0;right:0;max-height:50vh;overflow-y:auto;transform:translateY(100%);transition:transform .25s}.ss.on{transform:translateY(0)}
 .so{display:flex;align-items:center;gap:8px;padding:8px 6px;border-radius:10px;cursor:pointer;min-height:42px}.so:active{background:rgba(232,168,124,.2)}
-/* Farm view buttons */
 .fv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:15;pointer-events:none;display:none}.fv>*{pointer-events:auto}
 .bbk{position:absolute;top:calc(10px + var(--st));left:10px;background:var(--g);backdrop-filter:blur(12px);border:1.5px solid var(--gb);border-radius:14px;padding:8px 12px;font-weight:600;font-size:12px;cursor:pointer;box-shadow:var(--sh);min-height:42px;display:flex;align-items:center;gap:3px}.bbk:active{transform:scale(.95)}
 .fbb{position:absolute;bottom:calc(10px + var(--sb));left:50%;transform:translateX(-50%);display:flex;gap:5px}
 .ffb,.hab{backdrop-filter:blur(12px);border-radius:14px;padding:8px 12px;font-weight:600;font-size:12px;cursor:pointer;box-shadow:var(--sh);min-height:42px;font-family:'Fredoka';border:2px solid}
 .hab{background:rgba(200,240,200,.9);border-color:var(--ac2);color:#3a7a3a}.ffb{background:rgba(255,240,200,.9);border-color:#f0c040;color:#a08020}.ffb.on{background:#f0c040;color:#fff}
-/* Purchase */
 .pov{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(40,30,50,.5);z-index:56;display:none;align-items:center;justify-content:center}.pov.on{display:flex}
 .pp{background:var(--ui);border-radius:20px;padding:22px;text-align:center;box-shadow:0 16px 50px rgba(40,20,10,.3);width:85%;max-width:280px}
 .pp h3{font-weight:700;font-size:16px;margin-bottom:5px}.pp .pr{font-size:20px;color:#b8860b;font-weight:700}
 .pb{display:flex;gap:7px;justify-content:center;margin-top:12px}
 .pbtn{border:none;border-radius:12px;padding:9px 18px;font-weight:600;font-size:12px;cursor:pointer;min-height:42px;font-family:'Fredoka'}.pbtn.cf{background:var(--ac2);color:white}.pbtn.cf:disabled{opacity:.5}.pbtn.cn{background:rgba(180,160,140,.2);color:var(--tl)}
-/* Popups */
 .popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);z-index:200;border-radius:20px;padding:22px 28px;text-align:center;transition:transform .35s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
 .popup.show{transform:translate(-50%,-50%) scale(1)}
 .popup-ach{background:linear-gradient(135deg,#fff8e0,#fff0d0);border:2px solid #f0c040;box-shadow:0 10px 40px rgba(200,160,40,.3)}
 .popup-lvl{background:linear-gradient(135deg,#f0e0ff,#e0d0ff);border:2px solid var(--ac3);box-shadow:0 10px 40px rgba(160,80,200,.3)}
-/* Toasts */
 .toasts{position:fixed;top:calc(48px + var(--st));left:50%;transform:translateX(-50%);z-index:100;display:flex;flex-direction:column;gap:4px;pointer-events:none;align-items:center;width:90%;max-width:300px}
 .toast{background:var(--g);backdrop-filter:blur(12px);border:1.5px solid var(--gb);border-radius:10px;padding:6px 12px;font-weight:500;font-size:11px;box-shadow:var(--sh);animation:ti .25s ease,to .3s ease 2s forwards;text-align:center;width:fit-content;max-width:100%}
 @keyframes ti{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
 @keyframes to{from{opacity:1}to{opacity:0;transform:translateY(-8px)}}
-/* Guide */
 .guide-btn{position:absolute;top:calc(44px + var(--st));right:8px;background:var(--g);backdrop-filter:blur(12px);border:1.5px solid var(--gb);border-radius:50%;width:34px;height:34px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:var(--sh);z-index:20;color:var(--ac)}.guide-btn:active{transform:scale(.93)}
 .guide-page{padding:10px 0}.guide-page h3{font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
 .guide-page p{font-size:11px;color:var(--tl);line-height:1.6;margin-bottom:8px}
@@ -88,8 +76,7 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%}
 .guide-dot{width:8px;height:8px;border-radius:50%;background:rgba(180,160,140,.3);cursor:pointer}.guide-dot.active{background:var(--ac)}
 .sl{font-weight:600;font-size:12px;color:var(--tl);margin:8px 0 4px}
 .et{color:var(--tl);padding:14px;text-align:center;font-size:12px}
-.fog{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;background:radial-gradient(ellipse at center,rgba(200,195,210,.4),rgba(180,175,195,.6));animation:fp 4s ease-in-out infinite}
-@keyframes fp{0%,100%{opacity:.7}50%{opacity:1}}
+.fog{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}
 .lf{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(255,255,240,.3);pointer-events:none;z-index:2;animation:fl .15s ease}
 @keyframes fl{0%{opacity:1}100%{opacity:0}}
 @media(max-width:380px){.tp{padding:3px 7px;font-size:10px}.db{padding:6px 7px;font-size:9px}.db .lb{display:none}}
@@ -122,7 +109,7 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%}
 <div class="popup popup-lvl" id="lvlPop"><div style="font-weight:600;font-size:13px">LEVEL UP!</div><div id="lvlN" style="font-weight:700;font-size:34px;color:var(--ac3)"></div><div id="lvlU" style="font-size:11px;color:var(--tl);margin-top:4px"></div></div>
 <script>
 // ══════════════════════════════════════
-// 🔊 AUDIO
+// 🔊 AUDIO (unchanged)
 // ══════════════════════════════════════
 let ax=null,snd=true,mg=null,rg=null,rs=null,rf=null,amb=false;
 function initA(){try{ax=new(window.AudioContext||window.webkitAudioContext)();mg=ax.createGain();mg.gain.value=.5;mg.connect(ax.destination)}catch(e){}}
@@ -133,7 +120,7 @@ function tone(f,d,t='sine',v=.12){if(!ax||!snd)return;const o=ax.createOscillato
 function noise(d,v=.08,fq=4000){if(!ax||!snd)return;const sz=ax.sampleRate*d,b=ax.createBuffer(1,sz,ax.sampleRate),da=b.getChannelData(0);for(let i=0;i<sz;i++)da[i]=Math.random()*2-1;const s=ax.createBufferSource(),fl=ax.createBiquadFilter(),g=ax.createGain();s.buffer=b;fl.type='lowpass';fl.frequency.value=fq;g.gain.setValueAtTime(v,ax.currentTime);g.gain.exponentialRampToValueAtTime(.001,ax.currentTime+d);s.connect(fl);fl.connect(g);g.connect(mg);s.start()}
 function startRain(){if(!ax)return;const d=4,sz=ax.sampleRate*d,b=ax.createBuffer(2,sz,ax.sampleRate);for(let c=0;c<2;c++){const da=b.getChannelData(c);let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;for(let i=0;i<sz;i++){const w=Math.random()*2-1;b0=.99886*b0+w*.0555179;b1=.99332*b1+w*.0750759;b2=.969*b2+w*.153852;b3=.8665*b3+w*.3104856;b4=.55*b4+w*.5329522;b5=-.7616*b5-w*.016898;da[i]=(b0+b1+b2+b3+b4+b5+b6+w*.5362)*.11;b6=w*.115926;if(Math.random()<.0003)da[i]+=(Math.random()-.5)*.3}}
 rs=ax.createBufferSource();rs.buffer=b;rs.loop=true;rf=ax.createBiquadFilter();rf.type='bandpass';rf.frequency.value=800;rf.Q.value=.5;rg=ax.createGain();rg.gain.value=0;rs.connect(rf);rf.connect(rg);rg.connect(mg);rs.start()}
-function updRainA(){if(!rg||!ax)return;const i=G.weather.ri;rg.gain.setTargetAtTime(i*.35,ax.currentTime,.8)}
+function updRainA(){if(!rg||!ax)return;rg.gain.setTargetAtTime(G.weather.ri*.35,ax.currentTime,.8)}
 let lastCS=0;
 const SFX={
   plant(){tone(180,.15);tone(260,.12);setTimeout(()=>tone(340,.18,'triangle',.08),60)},
@@ -159,7 +146,7 @@ const SFX={
 };
 
 // ══════════════════════════════════════
-// 📊 DATA
+// 📊 DATA (unchanged)
 // ══════════════════════════════════════
 const FL=[
   {id:0,nm:'Daisy',em:'🌼',sc:5,gt:15,sv:10,rt:'common',cl:'#f5e642',ul:1},
@@ -208,6 +195,7 @@ const ACHS=[
   {id:'level_20',nm:'Village Hero',em:'👑',desc:'Reach level 20',rw:500},
   {id:'day_7',nm:'Dedicated',em:'🔥',desc:'Play 7 in-game days',rw:100},
 ];
+
 // ══════════════════════════════════════
 // 🎮 STATE
 // ══════════════════════════════════════
@@ -217,9 +205,44 @@ const G={coins:250,day:1,dayT:0,tt:0,xp:0,level:1,inv:new Array(10).fill(0),
   tools:{wc:1,hb:1,ss:1,ft:1},weather:WS[0],wT:0,wDur:70,stormCt:0,
   orders:[],oCd:0,bSlots:[],view:'village',cFarm:0,ff:false,time:0,
   cat:{x:0,y:0,tx:0,ty:0,hunger:80,happy:70,trust:10,acc:[],eq:[],mood:'idle',feedCt:0,petCt:0,giftT:0},
-  player:{gx:4,gy:4,sx:0,sy:0,dir:0,frame:0},// grid pos + screen pos
+  player:{gx:4,gy:4},
   particles:[],stats:{harvested:0,coinsEarned:0,ordersCompleted:0,bouquetsMade:0,stormsWeathered:0,luckyHarvests:0,catFed:0,giftsRcvd:0,recipeCrafted:new Set()},
-  achievements:new Set(),mx:0,my:0,lightT:0,ssOpen:false,sPlot:-1,activePanel:null,guidePage:0};
+  achievements:new Set(),mx:0,my:0,ssOpen:false,sPlot:-1,activePanel:null,guidePage:0};
+
+// ══════════════════════════════════════
+// 📷 CAMERA SYSTEM (NEW!)
+// ══════════════════════════════════════
+const cam={x:0,y:0,zoom:1,tx:0,ty:0,tz:1};
+function camLerp(dt){
+  const s=1-Math.pow(.05,dt);// smooth lerp
+  cam.x+=(cam.tx-cam.x)*s;cam.y+=(cam.ty-cam.y)*s;
+  cam.zoom+=(cam.tz-cam.zoom)*s}
+function autoZoom(){
+  if(G.view==='village'){
+    // Calculate actual grid extent in world coords
+    const tl=iso(0,0),br=iso(9,9),tr=iso(9,0),bl=iso(0,9);
+    const minX=Math.min(tl.x,br.x,tr.x,bl.x)-TW;
+    const maxX=Math.max(tl.x,br.x,tr.x,bl.x)+TW;
+    const minY=Math.min(tl.y,br.y,tr.y,bl.y)-TH*3;
+    const maxY=Math.max(tl.y,br.y,tr.y,bl.y)+TH*2;
+    const gw=maxX-minX,gh=maxY-minY;
+    // Available screen area (minus UI chrome)
+    const aw=W*.92,ah=H*.7;// leave room for HUD + dock
+    const scaleX=aw/gw,scaleY=ah/gh;
+    cam.tz=Math.min(scaleX,scaleY,3);
+    const mid=iso(4.5,4.5);cam.tx=mid.x;cam.ty=mid.y;
+  }else{
+    // Farm: top-down rectangular grid
+    const totalW=FGRIDW+FPAD*2, totalH=FGRIDH+FPAD*2+40;
+    const aw=W*.88,ah=H*.58;
+    const scaleX=aw/totalW,scaleY=ah/totalH;
+    cam.tz=Math.min(scaleX,scaleY,3.5);
+    cam.tx=FGRIDW/2;cam.ty=FGRIDH/2;
+  }}
+// World → Screen (through camera)
+function w2s(wx,wy){return{x:(wx-cam.x)*cam.zoom+W/2,y:(wy-cam.y)*cam.zoom+H/2}}
+// Screen → World
+function s2w(sx,sy){return{x:(sx-W/2)/cam.zoom+cam.x,y:(sy-H/2)/cam.zoom+cam.y}}
 
 // ══════════════════════════════════════
 // 🖥️ CANVAS + ISO ENGINE
@@ -228,47 +251,37 @@ const gc=document.getElementById('gc'),gx=gc.getContext('2d');
 const rc=document.getElementById('rc'),rx=rc.getContext('2d');
 let W,H,dpr;
 var drops=[],MRD=200,puddles=[];
-// Isometric tile dimensions (2:1 ratio)
-const TW=56,TH=28;// tile pixel size - smaller for mobile fit
-// World origin (where grid 0,0 maps to screen)
-let OX,OY;
+const TW=80,TH=40;// bigger tiles for detail
+// Grid → World (isometric projection, NO camera)
+function iso(gxi,gyi){return{x:(gxi-gyi)*TW/2,y:(gxi+gyi)*TH/2}}
+// World → Grid (inverse)
+function uniso(wx,wy){return{gx:wx/TW+wy/TH,gy:wy/TH-wx/TW}}
+// Farm iso (local coords, 4 cols x 3 rows) — NOW TOP-DOWN GRID
+const FPW=64,FPH=64,FGAP=10,FPAD=48;// plot size, gap, padding
+const FGRIDW=4*(FPW+FGAP)-FGAP, FGRIDH=3*(FPH+FGAP)-FGAP;
+function fgrid(c,r){return{x:c*(FPW+FGAP)+FPW/2, y:r*(FPH+FGAP)+FPH/2}}
+function fiso(c,r){return fgrid(c,r)}// alias for compat
 
 function resize(){dpr=window.devicePixelRatio||1;W=window.innerWidth;H=window.innerHeight;
   gc.width=W*dpr;gc.height=H*dpr;gc.style.width=W+'px';gc.style.height=H+'px';gx.setTransform(dpr,0,0,dpr,0,0);
   rc.width=W*dpr;rc.height=H*dpr;rc.style.width=W+'px';rc.style.height=H+'px';rx.setTransform(dpr,0,0,dpr,0,0);
-  // Center the isometric grid (shift left a bit to avoid right cutoff)
-  OX=W/2;OY=H*.28;initPuddles();initCatPos()}
+  initPuddles();autoZoom();cam.x=cam.tx;cam.y=cam.ty;cam.zoom=cam.tz;initCatPos()}
 window.addEventListener('resize',resize);resize();
 
-// Grid → Screen
-function iso(gx,gy){return{x:OX+(gx-gy)*TW/2,y:OY+(gx+gy)*TH/2}}
-// Screen → Grid (approximate, for click detection)
-function uniso(sx,sy){const dx=sx-OX,dy=sy-OY;return{gx:dx/TW+dy/TH,gy:dy/TH-dx/TW}}
-
-// Draw isometric diamond (flat tile)
+// Draw isometric diamond
 function drawTile(x,y,w,h,color){
   gx.fillStyle=color;gx.beginPath();
   gx.moveTo(x,y-h/2);gx.lineTo(x+w/2,y);gx.lineTo(x,y+h/2);gx.lineTo(x-w/2,y);gx.closePath();gx.fill()}
-
-// Draw isometric box (3 visible faces)
+// Draw isometric box (3 faces)
 function drawBox(cx,cy,w,h,d,topC,leftC,rightC){
-  // d = depth/height of box in pixels upward
-  // Top face
-  gx.fillStyle=topC;gx.beginPath();
-  gx.moveTo(cx,cy-d-h/2);gx.lineTo(cx+w/2,cy-d);gx.lineTo(cx,cy-d+h/2);gx.lineTo(cx-w/2,cy-d);gx.closePath();gx.fill();
-  // Left face
-  gx.fillStyle=leftC;gx.beginPath();
-  gx.moveTo(cx-w/2,cy-d);gx.lineTo(cx,cy-d+h/2);gx.lineTo(cx,cy+h/2);gx.lineTo(cx-w/2,cy);gx.closePath();gx.fill();
-  // Right face
-  gx.fillStyle=rightC;gx.beginPath();
-  gx.moveTo(cx+w/2,cy-d);gx.lineTo(cx,cy-d+h/2);gx.lineTo(cx,cy+h/2);gx.lineTo(cx+w/2,cy);gx.closePath();gx.fill()}
-
-// Shadow ellipse under objects
+  gx.fillStyle=topC;gx.beginPath();gx.moveTo(cx,cy-d-h/2);gx.lineTo(cx+w/2,cy-d);gx.lineTo(cx,cy-d+h/2);gx.lineTo(cx-w/2,cy-d);gx.closePath();gx.fill();
+  gx.fillStyle=leftC;gx.beginPath();gx.moveTo(cx-w/2,cy-d);gx.lineTo(cx,cy-d+h/2);gx.lineTo(cx,cy+h/2);gx.lineTo(cx-w/2,cy);gx.closePath();gx.fill();
+  gx.fillStyle=rightC;gx.beginPath();gx.moveTo(cx+w/2,cy-d);gx.lineTo(cx,cy-d+h/2);gx.lineTo(cx,cy+h/2);gx.lineTo(cx+w/2,cy);gx.closePath();gx.fill()}
 function drawShadow(cx,cy,rx,ry){
   gx.fillStyle='rgba(30,20,10,.12)';gx.beginPath();gx.ellipse(cx,cy+2,rx,ry,.3,0,Math.PI*2);gx.fill()}
 
 // ══════════════════════════════════════
-// 🌧️ RAIN
+// 🌧️ RAIN (screen space, parallax)
 // ══════════════════════════════════════
 function initPuddles(){puddles=[];for(let i=0;i<5;i++)puddles.push({x:Math.random()*W,y:H*.5+Math.random()*H*.35,r:12+Math.random()*20,t:Math.random()*100})}
 function updRain(dt){const it=G.weather.ri,tg=Math.floor(MRD*Math.min(it,1.5));
@@ -279,10 +292,20 @@ function updRain(dt){const it=G.weather.ri,tg=Math.floor(MRD*Math.min(it,1.5));
 function drawRain(){rx.clearRect(0,0,W,H);const it=G.weather.ri;if(it<=0)return;
   rx.strokeStyle='rgba(180,190,210,.25)';rx.lineWidth=1;
   for(const r of drops){rx.globalAlpha=r.o*Math.min(it,1);rx.beginPath();rx.moveTo(r.x,r.y);rx.lineTo(r.x-r.l*.1,r.y+r.l);rx.stroke()}
+  // Rain splash particles on ground
+  rx.globalAlpha=it*.3;rx.fillStyle='rgba(180,200,220,.3)';
+  for(let i=0;i<drops.length;i+=4){const r=drops[i];if(r.y>H*.4){
+    const sp=Math.sin(G.time*8+i)*.5+.5;
+    rx.beginPath();rx.ellipse(r.x,r.y,2+sp*3,1+sp,0,0,Math.PI*2);rx.fill()}}
+  // Puddles
+  if(it>.3){rx.globalAlpha=it*.15;rx.fillStyle='rgba(140,160,200,.2)';
+    for(const p of puddles){const ripple=Math.sin(p.t*2)*.4+.6;
+      rx.beginPath();rx.ellipse(p.x,p.y,p.r*ripple,p.r*.4*ripple,.15,0,Math.PI*2);rx.fill();
+      rx.strokeStyle='rgba(160,180,210,.15)';rx.lineWidth=.8;rx.stroke()}}
   rx.globalAlpha=1}
 
 // ══════════════════════════════════════
-// ✨ PARTICLES
+// ✨ PARTICLES (world space)
 // ══════════════════════════════════════
 function addP(type,x,y,n=1){for(let i=0;i<n;i++)G.particles.push({type,x:x+(Math.random()-.5)*16,y:y+(Math.random()-.5)*8,vx:(Math.random()-.5)*35,vy:-25-Math.random()*40,life:1,ml:1+Math.random()*.5,sz:4+Math.random()*3,rot:Math.random()*6.28})}
 function updParts(dt){for(let i=G.particles.length-1;i>=0;i--){const p=G.particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=45*dt;p.life-=dt;p.rot+=dt*2;if(p.life<=0)G.particles.splice(i,1)}}
@@ -291,10 +314,10 @@ function drawParts(){for(const p of G.particles){const a=Math.max(0,p.life/p.ml)
   else if(p.type==='sparkle'){gx.fillStyle=`rgba(255,240,100,${a})`;gx.beginPath();gx.arc(0,0,p.sz*.6,0,Math.PI*2);gx.fill()}
   else if(p.type==='coin'){gx.font=`${p.sz*2}px serif`;gx.textAlign='center';gx.fillText('🪙',0,0)}
   gx.restore()}gx.globalAlpha=1}
+
 // ══════════════════════════════════════
-// 🏘️ VILLAGE MAP (isometric tile grid)
+// 🏘️ VILLAGE MAP
 // ══════════════════════════════════════
-// 10x10 grid. Types: 0=grass, 1=path, 2=farm, 3=house, 4=shop, 5=tree, 6=water, 7=flowers
 const VMAP=[
   [5,0,0,0,0,4,0,0,0,5],
   [0,0,1,1,1,1,1,0,0,0],
@@ -307,183 +330,168 @@ const VMAP=[
   [0,0,0,1,1,2,1,0,0,5],
   [5,0,0,0,0,0,0,0,5,0],
 ];
-// Farm indices mapped to grid positions
 const FARM_POS=[{gx:3,gy:3},{gx:5,gy:3},{gx:3,gy:5},{gx:5,gy:8},{gx:5,gy:6}];
-// House positions
-const HOUSE_POS=[{gx:0,gy:6},{gx:8,gy:2},{gx:8,gy:6}];
 
 // ══════════════════════════════════════
-// 🎨 DRAWING: SKY + GROUND
+// 🎨 DRAWING (all in world coords, camera applied at frame level)
 // ══════════════════════════════════════
-function drawSky(){const w=G.weather.id;let t,b;
-  if(w==='sunny'){t='#87a5c8';b='#d4b88a'}else if(w==='storm'){t='#4a4058';b='#7a6858'}else if(w==='fog'){t='#8a8898';b='#b0a898'}else if(w==='drizzle'){t='#7a78a0';b='#c0a880'}else{t='#6a6890';b='#b89868'}
-  const g=gx.createLinearGradient(0,0,0,H);g.addColorStop(0,t);g.addColorStop(.5,b);g.addColorStop(1,'#5a7848');gx.fillStyle=g;gx.fillRect(0,0,W,H);
-  // Sun glow (when sunny)
+function drawSky(){
+  gx.save();gx.setTransform(dpr,0,0,dpr,0,0);// screen space
+  const w=G.weather.id;let t,b;
+  if(w==='sunny'){t='#6aaed8';b='#e8c878'}else if(w==='storm'){t='#4a4058';b='#7a6858'}else if(w==='fog'){t='#8a8898';b='#b0a898'}else if(w==='drizzle'){t='#7888b0';b='#c8a870'}else{t='#6878a0';b='#c09858'}
+  const g=gx.createLinearGradient(0,0,0,H);g.addColorStop(0,t);g.addColorStop(.45,b);g.addColorStop(1,'#5a8838');gx.fillStyle=g;gx.fillRect(0,0,W,H);
   if(w==='sunny'){gx.fillStyle='rgba(255,240,180,.15)';gx.beginPath();gx.arc(W*.2,H*.12,80,0,Math.PI*2);gx.fill();
     gx.fillStyle='rgba(255,220,140,.08)';gx.beginPath();gx.arc(W*.2,H*.12,140,0,Math.PI*2);gx.fill()}
-  // Clouds
   const ca=w==='sunny'?'rgba(255,255,255,.2)':'rgba(180,175,195,.15)';gx.fillStyle=ca;
   for(let i=0;i<3;i++){const cx=((G.time*10+i*220)%(W+200))-100,cy=H*.06+i*20;
-    gx.beginPath();gx.arc(cx,cy,22,0,Math.PI*2);gx.arc(cx+18,cy-6,15,0,Math.PI*2);gx.arc(cx+30,cy,18,0,Math.PI*2);gx.fill()}}
+    gx.beginPath();gx.arc(cx,cy,22,0,Math.PI*2);gx.arc(cx+18,cy-6,15,0,Math.PI*2);gx.arc(cx+30,cy,18,0,Math.PI*2);gx.fill()}
+  gx.restore()}
 
-// ══════════════════════════════════════
-// 🏠 DRAW ISO OBJECTS
-// ══════════════════════════════════════
-function drawGrassTile(sx,sy,variant){
-  const c=variant%3===0?'#6a9a52':variant%3===1?'#5e9048':'#72a05a';drawTile(sx,sy,TW,TH,c);
-  // Grass detail dots
-  gx.fillStyle='rgba(90,140,60,.3)';
-  for(let i=0;i<3;i++){const dx=(Math.sin(variant*7+i*3.7))*TW*.2,dy=(Math.cos(variant*5+i*2.3))*TH*.15;
-    gx.beginPath();gx.arc(sx+dx,sy+dy,1.2,0,Math.PI*2);gx.fill()}}
-
+function drawGrassTile(sx,sy,seed){
+  const c=seed%3===0?'#6a9a52':seed%3===1?'#5e9048':'#72a05a';drawTile(sx,sy,TW,TH,c);
+  gx.fillStyle='rgba(90,160,60,.18)';
+  for(let i=0;i<6;i++){const dx=(Math.sin(seed*7+i*3.7))*TW*.25,dy=(Math.cos(seed*5+i*2.3))*TH*.18;gx.fillRect(sx+dx-1,sy+dy-1,2,2)}
+  gx.fillStyle='rgba(50,120,30,.1)';
+  for(let i=0;i<4;i++){const dx=(Math.sin(seed*4+i*5.1))*TW*.2,dy=(Math.cos(seed*3+i*4.3))*TH*.14;gx.fillRect(sx+dx,sy+dy,1,3)}}
 function drawPathTile(sx,sy){
-  drawTile(sx,sy,TW,TH,'#c4a87a');// tan path
-  // Stone texture
-  gx.fillStyle='rgba(160,140,110,.3)';
-  for(let i=0;i<4;i++){const dx=(Math.sin(sx+i*2.5))*12,dy=(Math.cos(sy+i*1.7))*5;
-    gx.beginPath();gx.ellipse(sx+dx,sy+dy,4,2.5,.4,0,Math.PI*2);gx.fill()}
-  // Border
-  gx.strokeStyle='rgba(180,160,130,.25)';gx.lineWidth=.8;
-  gx.beginPath();gx.moveTo(sx,sy-TH/2);gx.lineTo(sx+TW/2,sy);gx.lineTo(sx,sy+TH/2);gx.lineTo(sx-TW/2,sy);gx.closePath();gx.stroke()}
-
+  drawTile(sx,sy,TW,TH,'#c4a87a');
+  gx.fillStyle='rgba(160,140,110,.2)';
+  for(let i=0;i<6;i++){const dx=(Math.sin(sx*.1+i*2.5))*TW*.22,dy=(Math.cos(sy*.1+i*1.7))*TH*.16;
+    gx.beginPath();gx.ellipse(sx+dx,sy+dy,3,1.8,.4+i*.2,0,Math.PI*2);gx.fill()}}
 function drawFarmTile(sx,sy,fi,unlocked){
-  if(unlocked){// Rich brown soil
-    drawTile(sx,sy,TW,TH,'#8a6a40');
-    // Soil furrows
-    gx.strokeStyle='rgba(100,75,45,.3)';gx.lineWidth=1;
-    for(let i=-2;i<=2;i++){const ox=i*7;gx.beginPath();gx.moveTo(sx+ox-10,sy-2);gx.lineTo(sx+ox+10,sy+2);gx.stroke()}
-    // Green border
-    gx.strokeStyle='rgba(90,140,60,.4)';gx.lineWidth=1.5;
+  if(unlocked){drawTile(sx,sy,TW,TH,'#8a6a40');
+    gx.strokeStyle='rgba(100,75,45,.25)';gx.lineWidth=1;
+    for(let i=-2;i<=2;i++){const ox=i*TW*.1;gx.beginPath();gx.moveTo(sx+ox-12,sy-2);gx.lineTo(sx+ox+12,sy+2);gx.stroke()}
+    gx.strokeStyle='rgba(90,140,60,.35)';gx.lineWidth=1.5;
     gx.beginPath();gx.moveTo(sx,sy-TH/2);gx.lineTo(sx+TW/2,sy);gx.lineTo(sx,sy+TH/2);gx.lineTo(sx-TW/2,sy);gx.closePath();gx.stroke();
-  }else{// Locked - darker
-    drawTile(sx,sy,TW,TH,'rgba(80,70,50,.4)');
+  }else{drawTile(sx,sy,TW,TH,'rgba(80,70,50,.35)');
     gx.strokeStyle='rgba(140,120,90,.3)';gx.lineWidth=1;gx.setLineDash([3,3]);
     gx.beginPath();gx.moveTo(sx,sy-TH/2);gx.lineTo(sx+TW/2,sy);gx.lineTo(sx,sy+TH/2);gx.lineTo(sx-TW/2,sy);gx.closePath();gx.stroke();gx.setLineDash([]);
-    // Lock icon
-    gx.font='16px serif';gx.textAlign='center';gx.fillText('🔒',sx,sy+5);
-    // Price
-    gx.fillStyle='rgba(255,240,200,.8)';gx.font='600 9px Fredoka';gx.fillText(`${FCOST[fi]}🪙`,sx,sy+16)}}
+    gx.font='14px serif';gx.textAlign='center';gx.fillText('🔒',sx,sy+2);
+    gx.fillStyle='rgba(80,60,30,.5)';gx.beginPath();gx.roundRect(sx-18,sy+6,36,13,4);gx.fill();
+    gx.fillStyle='rgba(255,240,200,.95)';gx.font='600 10px Fredoka';gx.fillText(`${FCOST[fi]}🪙`,sx,sy+16)}}
 
 function drawHouseISO(sx,sy){
-  const bw=TW*.9,bh=TH*.9,bd=28;// box dimensions
-  drawShadow(sx+6,sy+5,bw*.4,bh*.3);
-  // Walls
+  const bw=TW*.9,bh=TH*.9,bd=34;
+  drawShadow(sx+8,sy+6,bw*.42,bh*.32);
   drawBox(sx,sy,bw,bh,bd,'#f0e0c8','#d8c8a8','#c8b898');
-  // Roof (taller triangular)
-  const rh=18;
-  gx.fillStyle='#c07050';gx.beginPath();
-  gx.moveTo(sx-bw/2,sy-bd);gx.lineTo(sx,sy-bd-rh);gx.lineTo(sx+bw/2,sy-bd);gx.lineTo(sx,sy-bd+bh/2);gx.closePath();gx.fill();
-  gx.fillStyle='#a86040';gx.beginPath();
-  gx.moveTo(sx,sy-bd-rh);gx.lineTo(sx+bw/2,sy-bd);gx.lineTo(sx,sy-bd+bh/2);gx.closePath();gx.fill();
+  const rh=22;
+  gx.fillStyle='#c07050';gx.beginPath();gx.moveTo(sx-bw/2,sy-bd);gx.lineTo(sx,sy-bd-rh);gx.lineTo(sx+bw/2,sy-bd);gx.lineTo(sx,sy-bd+bh/2);gx.closePath();gx.fill();
+  gx.fillStyle='#a86040';gx.beginPath();gx.moveTo(sx,sy-bd-rh);gx.lineTo(sx+bw/2,sy-bd);gx.lineTo(sx,sy-bd+bh/2);gx.closePath();gx.fill();
+  gx.strokeStyle='rgba(80,40,20,.15)';gx.lineWidth=1;gx.beginPath();gx.moveTo(sx,sy-bd-rh);gx.lineTo(sx,sy-bd+bh/2);gx.stroke();
   // Window
-  gx.fillStyle='rgba(255,220,120,.6)';
-  gx.fillRect(sx-5,sy-bd+bh*.15-3,6,5);
+  gx.fillStyle='#8a6040';gx.fillRect(sx-8,sy-bd+bh*.08-4,10,9);
+  gx.fillStyle='rgba(255,220,120,.55)';gx.fillRect(sx-7,sy-bd+bh*.08-3,8,7);
+  gx.strokeStyle='rgba(100,70,40,.3)';gx.lineWidth=.8;gx.beginPath();gx.moveTo(sx-3,sy-bd+bh*.08-3);gx.lineTo(sx-3,sy-bd+bh*.08+4);gx.stroke();
+  gx.beginPath();gx.moveTo(sx-7,sy-bd+bh*.08+.5);gx.lineTo(sx+1,sy-bd+bh*.08+.5);gx.stroke();
   // Door
-  gx.fillStyle='#8a6040';
-  gx.fillRect(sx+bw*.1,sy-bd+bh*.3,5,10);
-  // Chimney
-  drawBox(sx+bw*.25,sy-bd-rh+2,6,3,10,'#888','#777','#666')}
+  gx.fillStyle='#8a6040';gx.fillRect(sx+bw*.08,sy-bd+bh*.2,7,13);
+  gx.fillStyle='#f0c040';gx.beginPath();gx.arc(sx+bw*.08+5.5,sy-bd+bh*.2+8,1.2,0,Math.PI*2);gx.fill();
+  // Chimney on roof
+  drawBox(sx+bw*.22,sy-bd-rh*.45,7,3.5,12,'#888','#777','#666');
+  if(Math.sin(G.time+sx)>.3){gx.fillStyle='rgba(200,200,200,.12)';
+    gx.beginPath();gx.arc(sx+bw*.22,sy-bd-rh*.45-14+Math.sin(G.time*2)*2,3.5,0,Math.PI*2);gx.fill();
+    gx.beginPath();gx.arc(sx+bw*.22-2,sy-bd-rh*.45-20+Math.sin(G.time*2.5)*2,2.8,0,Math.PI*2);gx.fill()}}
 
 function drawShopISO(sx,sy){
-  const bw=TW*1.1,bh=TH*1.1,bd=32;
-  drawShadow(sx+6,sy+5,bw*.45,bh*.35);
+  const bw=TW*1.1,bh=TH*1.1,bd=38;
+  drawShadow(sx+8,sy+6,bw*.45,bh*.35);
   drawBox(sx,sy,bw,bh,bd,'#f8f0d8','#e8d8b8','#d8c8a8');
-  // Awning (red stripes)
-  gx.fillStyle='#e06050';gx.beginPath();
-  gx.moveTo(sx-bw/2-3,sy-bd+2);gx.lineTo(sx,sy-bd-bh/2-3);gx.lineTo(sx+bw/2+3,sy-bd+2);gx.lineTo(sx,sy-bd+bh/2+3);gx.closePath();gx.fill();
-  // Stripe lines
+  gx.fillStyle='#e06050';gx.beginPath();gx.moveTo(sx-bw/2-3,sy-bd+2);gx.lineTo(sx,sy-bd-bh/2-3);gx.lineTo(sx+bw/2+3,sy-bd+2);gx.lineTo(sx,sy-bd+bh/2+3);gx.closePath();gx.fill();
   gx.strokeStyle='rgba(255,255,255,.3)';gx.lineWidth=1.5;
   for(let i=-2;i<=2;i++){const ox=i*bw*.1;gx.beginPath();gx.moveTo(sx+ox-bw*.15,sy-bd-1);gx.lineTo(sx+ox+bw*.15,sy-bd+5);gx.stroke()}
-  // Sign
-  gx.fillStyle='rgba(255,248,240,.9)';
-  gx.fillRect(sx-14,sy-bd+bd*.3,28,12);gx.fillStyle='#8a6040';gx.font='bold 8px Fredoka';gx.textAlign='center';gx.fillText('🌺 SHOP',sx,sy-bd+bd*.3+9)}
+  gx.fillStyle='rgba(255,248,240,.92)';gx.fillRect(sx-16,sy-bd+bd*.28,32,14);
+  gx.fillStyle='#8a6040';gx.font='bold 9px Fredoka';gx.textAlign='center';gx.fillText('🌺 SHOP',sx,sy-bd+bd*.28+10)}
 
 function drawTreeISO(sx,sy,variant){
-  drawShadow(sx+4,sy+3,12,6);
-  // Trunk
-  const tw=3,th=16;
-  gx.fillStyle='#8a7050';gx.fillRect(sx-tw/2,sy-th,tw,th);
-  // Foliage (layered circles)
-  const sw=Math.sin(G.time*.7+variant*5)*1.5;
-  const colors=['#4a8838','#5a9848','#48802e'];
-  const sizes=[[0,-20,14],[-7,-15,11],[7,-17,10]];
-  gx.fillStyle=colors[variant%3];gx.beginPath();gx.arc(sx+sw,sy-22,14,0,Math.PI*2);gx.fill();
-  gx.fillStyle='#5a9848';gx.beginPath();gx.arc(sx-6+sw,sy-16,10,0,Math.PI*2);gx.fill();
-  gx.fillStyle='#48902e';gx.beginPath();gx.arc(sx+5+sw,sy-19,9,0,Math.PI*2);gx.fill();
-  // Highlight
-  gx.fillStyle='rgba(120,180,80,.3)';gx.beginPath();gx.arc(sx-3+sw,sy-25,5,0,Math.PI*2);gx.fill()}
+  drawShadow(sx+5,sy+4,14,7);
+  const tw=4,th=20;gx.fillStyle='#7a6040';gx.fillRect(sx-tw/2,sy-th,tw+1,th);
+  gx.fillStyle='#6a5030';gx.fillRect(sx-tw/2,sy-th,tw/2,th);// dark side
+  const sw=Math.sin(G.time*.7+variant*5)*2;
+  gx.fillStyle='#4a8838';gx.beginPath();gx.arc(sx+sw,sy-26,16,0,Math.PI*2);gx.fill();
+  gx.fillStyle='#5a9848';gx.beginPath();gx.arc(sx-7+sw,sy-19,12,0,Math.PI*2);gx.fill();
+  gx.fillStyle='#48902e';gx.beginPath();gx.arc(sx+6+sw,sy-22,11,0,Math.PI*2);gx.fill();
+  gx.fillStyle='rgba(120,180,80,.25)';gx.beginPath();gx.arc(sx-3+sw,sy-30,6,0,Math.PI*2);gx.fill();
+  // Leaf dots
+  gx.fillStyle='rgba(80,150,40,.15)';
+  for(let i=0;i<4;i++){const a=i*1.5+variant;gx.beginPath();gx.arc(sx+Math.cos(a)*10+sw,sy-24+Math.sin(a)*6,2,0,Math.PI*2);gx.fill()}}
 
 function drawFlowerPatchISO(sx,sy){
   drawTile(sx,sy,TW,TH,'#6a9a52');
-  // Random tiny flowers
   const colors=['#f5e642','#ff6b8a','#b388ff','#f8bbd0','#ffa726'];
-  for(let i=0;i<6;i++){const dx=(Math.sin(sx+i*3.1))*TW*.25,dy=(Math.cos(sy+i*2.7))*TH*.2;
-    gx.fillStyle=colors[i%5];gx.beginPath();gx.arc(sx+dx,sy+dy-4,2.5,0,Math.PI*2);gx.fill();
-    gx.fillStyle='#5a8a40';gx.fillRect(sx+dx-.5,sy+dy-3,1,4)}}
+  for(let i=0;i<6;i++){const dx=(Math.sin(sx*.1+i*3.1))*TW*.25,dy=(Math.cos(sy*.1+i*2.7))*TH*.2;
+    gx.fillStyle=colors[i%5];gx.beginPath();gx.arc(sx+dx,sy+dy,2.5,0,Math.PI*2);gx.fill();
+    gx.fillStyle='rgba(60,120,40,.4)';gx.beginPath();gx.arc(sx+dx,sy+dy+2.5,1.5,0,Math.PI*2);gx.fill()}}
 
 // ══════════════════════════════════════
-// 👤 PLAYER + 🐱 CAT (isometric)
+// 👤 PLAYER + 🐱 CAT
 // ══════════════════════════════════════
-function initCatPos(){const ps=iso(G.player.gx,G.player.gy);G.cat.x=ps.x+20;G.cat.y=ps.y+5;G.cat.tx=ps.x+20;G.cat.ty=ps.y+5}
+function initCatPos(){const ps=iso(G.player.gx,G.player.gy);G.cat.x=ps.x+25;G.cat.y=ps.y+8;G.cat.tx=ps.x+25;G.cat.ty=ps.y+8}
 
 function drawPlayer(sx,sy){
-  drawShadow(sx,sy+2,8,4);
-  // Body
-  gx.fillStyle='#5080c0';drawBox(sx,sy,10,5,14,'#6090d0','#5080c0','#4070b0');
-  // Head
-  gx.fillStyle='#f0d0a0';gx.beginPath();gx.arc(sx,sy-18,6,0,Math.PI*2);gx.fill();
-  // Hair
-  gx.fillStyle='#6a4020';gx.beginPath();gx.arc(sx,sy-20,6,Math.PI,0);gx.fill();
-  // Hat
-  gx.fillStyle='#e0a060';gx.beginPath();gx.ellipse(sx,sy-22,8,3,0,0,Math.PI*2);gx.fill();
-  drawBox(sx,sy-24,8,4,4,'#e0a060','#c89050','#b88040');
-  // Arms (simple)
-  gx.strokeStyle='#f0d0a0';gx.lineWidth=2;gx.beginPath();gx.moveTo(sx-5,sy-12);gx.lineTo(sx-9,sy-6);gx.stroke();
-  gx.beginPath();gx.moveTo(sx+5,sy-12);gx.lineTo(sx+9,sy-6);gx.stroke()}
+  const fy=sy+TH*.25;// feet at bottom of tile
+  drawShadow(sx,fy+3,12,6);
+  drawBox(sx,fy-8,14,7,18,'#6090d0','#5080c0','#4070b0');
+  gx.fillStyle='#f0d0a0';gx.beginPath();gx.arc(sx,fy-30,8,0,Math.PI*2);gx.fill();
+  gx.fillStyle='#6a4020';gx.beginPath();gx.arc(sx,fy-32,8,Math.PI,0);gx.fill();
+  gx.fillStyle='#e0a060';gx.beginPath();gx.ellipse(sx,fy-34,10,4,0,0,Math.PI*2);gx.fill();
+  drawBox(sx,fy-38,10,5,5,'#e0a060','#c89050','#b88040');
+  gx.strokeStyle='#f0d0a0';gx.lineWidth=2.5;
+  gx.beginPath();gx.moveTo(sx-7,fy-20);gx.lineTo(sx-12,fy-12);gx.stroke();
+  gx.beginPath();gx.moveTo(sx+7,fy-20);gx.lineTo(sx+12,fy-12);gx.stroke();
+  gx.fillStyle='#6a4020';gx.fillRect(sx-6,fy-1,5,3);gx.fillRect(sx+1,fy-1,5,3)}
 
 function drawCatISO(cx,cy){
   if(G.weather.id==='storm'&&G.cat.mood==='hiding')return;
-  drawShadow(cx,cy+2,8,4);
-  // Body (orange ellipse)
-  gx.fillStyle='#f0a840';gx.beginPath();gx.ellipse(cx,cy-3,10,6,0,0,Math.PI*2);gx.fill();
-  // Head
-  gx.beginPath();gx.arc(cx+8,cy-8,6,0,Math.PI*2);gx.fill();
+  const fy=cy+TH*.25;
+  drawShadow(cx,fy+3,12,6);
+  gx.fillStyle='#f0a840';gx.beginPath();gx.ellipse(cx,fy-8,14,8,0,0,Math.PI*2);gx.fill();
+  gx.strokeStyle='#d09030';gx.lineWidth=1;
+  for(let i=-1;i<=1;i++){gx.beginPath();gx.moveTo(cx+i*6,fy-14);gx.lineTo(cx+i*6,fy-3);gx.stroke()}
+  gx.fillStyle='#f0a840';gx.beginPath();gx.arc(cx+10,fy-16,8,0,Math.PI*2);gx.fill();
   // Ears
-  gx.beginPath();gx.moveTo(cx+4,cy-14);gx.lineTo(cx+7,cy-8);gx.lineTo(cx+1,cy-10);gx.closePath();gx.fill();
-  gx.beginPath();gx.moveTo(cx+12,cy-14);gx.lineTo(cx+15,cy-10);gx.lineTo(cx+9,cy-8);gx.closePath();gx.fill();
+  gx.beginPath();gx.moveTo(cx+4,fy-24);gx.lineTo(cx+9,fy-16);gx.lineTo(cx+1,fy-18);gx.closePath();gx.fill();
+  gx.beginPath();gx.moveTo(cx+16,fy-24);gx.lineTo(cx+19,fy-18);gx.lineTo(cx+11,fy-16);gx.closePath();gx.fill();
+  gx.fillStyle='#f0c0a0';
+  gx.beginPath();gx.moveTo(cx+5,fy-22);gx.lineTo(cx+8.5,fy-17);gx.lineTo(cx+2.5,fy-18.5);gx.closePath();gx.fill();
+  gx.beginPath();gx.moveTo(cx+15,fy-22);gx.lineTo(cx+17.5,fy-18.5);gx.lineTo(cx+11.5,fy-17);gx.closePath();gx.fill();
   // Eyes
   gx.fillStyle='#302018';
-  if(G.cat.mood==='sunbathing'){gx.lineWidth=1;gx.strokeStyle='#302018';gx.beginPath();gx.arc(cx+5,cy-8,1.2,0,Math.PI);gx.stroke();gx.beginPath();gx.arc(cx+11,cy-8,1.2,0,Math.PI);gx.stroke()}
-  else{gx.beginPath();gx.arc(cx+5,cy-8,1.3,0,Math.PI*2);gx.fill();gx.beginPath();gx.arc(cx+11,cy-8,1.3,0,Math.PI*2);gx.fill()}
-  // Nose
-  gx.fillStyle='#e08080';gx.beginPath();gx.arc(cx+8,cy-5.5,1,0,Math.PI*2);gx.fill();
+  if(G.cat.mood==='sunbathing'){gx.lineWidth=1.2;gx.strokeStyle='#302018';gx.beginPath();gx.arc(cx+7,fy-16,1.5,0,Math.PI);gx.stroke();gx.beginPath();gx.arc(cx+13,fy-16,1.5,0,Math.PI);gx.stroke()}
+  else{gx.beginPath();gx.arc(cx+7,fy-16,1.8,0,Math.PI*2);gx.fill();gx.beginPath();gx.arc(cx+13,fy-16,1.8,0,Math.PI*2);gx.fill();
+    gx.fillStyle='#fff';gx.beginPath();gx.arc(cx+7.5,fy-16.5,.7,0,Math.PI*2);gx.fill();gx.beginPath();gx.arc(cx+13.5,fy-16.5,.7,0,Math.PI*2);gx.fill()}
+  gx.fillStyle='#e08080';gx.beginPath();gx.arc(cx+10,fy-13,1.3,0,Math.PI*2);gx.fill();
+  gx.strokeStyle='#d07070';gx.lineWidth=.8;gx.beginPath();gx.moveTo(cx+10,fy-12);gx.lineTo(cx+8,fy-11);gx.stroke();gx.beginPath();gx.moveTo(cx+10,fy-12);gx.lineTo(cx+12,fy-11);gx.stroke();
   // Tail
-  gx.strokeStyle='#f0a840';gx.lineWidth=2.2;gx.lineCap='round';gx.beginPath();gx.moveTo(cx-10,cy-3);gx.quadraticCurveTo(cx-16,cy-10,cx-13+Math.sin(G.time*3)*5,cy-16);gx.stroke();
+  gx.strokeStyle='#f0a840';gx.lineWidth=2.8;gx.lineCap='round';gx.beginPath();gx.moveTo(cx-14,fy-8);gx.quadraticCurveTo(cx-20,fy-18,cx-17+Math.sin(G.time*3)*6,fy-24);gx.stroke();
+  gx.fillStyle='#e09830';gx.fillRect(cx-7,fy-2,3.5,4);gx.fillRect(cx+5,fy-2,3.5,4);
   // Accessories
-  if(G.cat.eq.includes('umbrella')&&G.weather.ri>0){gx.fillStyle='#e06060';gx.beginPath();gx.arc(cx+4,cy-22,12,Math.PI,0);gx.fill();gx.strokeStyle='#c04040';gx.lineWidth=1.3;gx.beginPath();gx.moveTo(cx+4,cy-22);gx.lineTo(cx+4,cy-12);gx.stroke()}
-  if(G.cat.eq.includes('bow')){gx.fillStyle='#ff4060';gx.beginPath();gx.arc(cx+8,cy-1,2.5,0,Math.PI*2);gx.fill();gx.beginPath();gx.arc(cx+5,cy,1.8,0,Math.PI*2);gx.fill();gx.beginPath();gx.arc(cx+11,cy,1.8,0,Math.PI*2);gx.fill()}
-  if(G.cat.eq.includes('hat')){gx.fillStyle='#3a3a3a';gx.fillRect(cx+3,cy-18,10,5);gx.fillRect(cx+0,cy-13.5,16,2)}
-  if(G.cat.eq.includes('bell')){gx.fillStyle='#f0c040';gx.beginPath();gx.arc(cx+8,cy+1,2,0,Math.PI*2);gx.fill()}
-  if(G.cat.eq.includes('crown')){gx.fillStyle='#f0c040';gx.beginPath();gx.moveTo(cx+2,cy-14);gx.lineTo(cx+4,cy-18);gx.lineTo(cx+7,cy-15);gx.lineTo(cx+10,cy-19);gx.lineTo(cx+13,cy-14);gx.closePath();gx.fill()}
-  // Happy hearts
-  if(G.cat.happy>80&&Math.sin(G.time*2)>.7){gx.globalAlpha=.5;gx.font='8px serif';gx.fillText('💕',cx-4+Math.sin(G.time*3)*6,cy-22-Math.abs(Math.sin(G.time*2.5))*6);gx.globalAlpha=1}
-  // Mood bubble
-  if(G.cat.hunger<15&&Math.sin(G.time*3)>.2){gx.fillStyle='rgba(255,248,240,.9)';gx.beginPath();gx.arc(cx+18,cy-20,8,0,Math.PI*2);gx.fill();gx.font='10px serif';gx.textAlign='center';gx.fillText('🐟',cx+18,cy-17)}
-  // Nametag on hover
-  const md=Math.sqrt((G.mx-cx)**2+(G.my-cy)**2);
-  if(md<35){gx.fillStyle='rgba(255,248,240,.9)';const tw=46;gx.beginPath();gx.roundRect(cx-tw/2,cy-32,tw,14,6);gx.fill();
-    gx.fillStyle='#8a6040';gx.font='600 9px Fredoka';gx.textAlign='center';gx.fillText('Mochi 🐱',cx,cy-22)}}
+  if(G.cat.eq.includes('umbrella')&&G.weather.ri>0){gx.fillStyle='#e06060';gx.beginPath();gx.arc(cx+6,fy-32,15,Math.PI,0);gx.fill();gx.strokeStyle='#c04040';gx.lineWidth=1.5;gx.beginPath();gx.moveTo(cx+6,fy-32);gx.lineTo(cx+6,fy-20);gx.stroke()}
+  if(G.cat.eq.includes('bow')){gx.fillStyle='#ff4060';gx.beginPath();gx.arc(cx+10,fy-4,3,0,Math.PI*2);gx.fill();gx.beginPath();gx.arc(cx+6,fy-3,2.2,0,Math.PI*2);gx.fill();gx.beginPath();gx.arc(cx+14,fy-3,2.2,0,Math.PI*2);gx.fill()}
+  if(G.cat.eq.includes('hat')){gx.fillStyle='#3a3a3a';gx.fillRect(cx+5,fy-28,12,6);gx.fillRect(cx+2,fy-22.5,18,2.5)}
+  if(G.cat.eq.includes('bell')){gx.fillStyle='#f0c040';gx.beginPath();gx.arc(cx+10,fy-2,2.8,0,Math.PI*2);gx.fill();gx.fillStyle='#d0a020';gx.beginPath();gx.arc(cx+10,fy-2,1,0,Math.PI*2);gx.fill()}
+  if(G.cat.eq.includes('crown')){gx.fillStyle='#f0c040';gx.beginPath();gx.moveTo(cx+4,fy-24);gx.lineTo(cx+6,fy-29);gx.lineTo(cx+9,fy-25);gx.lineTo(cx+12,fy-30);gx.lineTo(cx+16,fy-24);gx.closePath();gx.fill();gx.fillStyle='#e06060';gx.beginPath();gx.arc(cx+10,fy-26,1.3,0,Math.PI*2);gx.fill()}
+  if(G.cat.happy>80&&Math.sin(G.time*2)>.7){gx.globalAlpha=.6;gx.font='11px serif';gx.fillText('💕',cx-2+Math.sin(G.time*3)*6,fy-34-Math.abs(Math.sin(G.time*2.5))*8);gx.globalAlpha=1}
+  if(G.cat.hunger<15&&Math.sin(G.time*3)>.2){
+    const bx=cx+22,by=fy-32;gx.fillStyle='rgba(255,248,240,.95)';gx.beginPath();gx.arc(bx,by,10,0,Math.PI*2);gx.fill();
+    gx.strokeStyle='rgba(160,140,120,.3)';gx.lineWidth=1;gx.stroke();
+    gx.font='12px serif';gx.textAlign='center';gx.fillText('🐟',bx,by+4)}
+  // Nametag
+  const ms=s2w(G.mx,G.my);const md=Math.sqrt((ms.x-cx)**2+(ms.y-cy)**2);
+  if(md<50/cam.zoom){gx.fillStyle='rgba(255,248,240,.9)';const tw=54;gx.beginPath();gx.roundRect(cx-tw/2+5,fy-42,tw,16,7);gx.fill();
+    gx.fillStyle='#8a6040';gx.font='600 10px Fredoka';gx.textAlign='center';gx.fillText('Mochi 🐱',cx+5,fy-30)}}
 
 function updCat(dt){const c=G.cat,w=G.weather.id;
   c.hunger=Math.max(0,c.hunger-.15*dt*(G.ff?3:1));c.happy=Math.max(0,c.happy-.08*dt*(G.ff?3:1));
   if(c.hunger<20)c.happy=Math.max(0,c.happy-.2*dt*(G.ff?3:1));
   const dx=c.tx-c.x,dy=c.ty-c.y,dist=Math.sqrt(dx*dx+dy*dy);
-  if(dist>3){c.x+=dx*2*dt;c.y+=dy*2*dt;c.mood='walking'}
+  if(dist>3){c.x+=dx*2.5*dt;c.y+=dy*2.5*dt;c.mood='walking'}
   else{c.mood=c.hunger<15?'hungry':w==='storm'&&!c.eq.includes('umbrella')?'hiding':w==='sunny'?'sunbathing':'idle'}
-  if(Math.random()<.003*dt*60&&w!=='storm'){// Random wander near player
-    const ps=iso(G.player.gx,G.player.gy);c.tx=ps.x+((Math.random()-.5)*60);c.ty=ps.y+((Math.random()-.5)*30)}
-  const mdd=Math.sqrt((G.mx-c.x)**2+(G.my-c.y)**2);
-  if(mdd<45){c.mood='curious';const now=performance.now();if(now-lastCS>4000){lastCS=now;Math.random()<.4?SFX.meow():SFX.purr()}}
+  if(Math.random()<.003*dt*60&&w!=='storm'){
+    if(G.view==='village'){const ps=iso(G.player.gx,G.player.gy);c.tx=ps.x+((Math.random()-.5)*70);c.ty=ps.y+((Math.random()-.5)*35)}
+    else{c.tx+=(Math.random()-.5)*40;c.ty+=(Math.random()-.5)*20}}
+  const ms=s2w(G.mx,G.my);const mdd=Math.sqrt((ms.x-c.x)**2+(ms.y-c.y)**2);
+  if(mdd<50/cam.zoom){c.mood='curious';const now=performance.now();if(now-lastCS>4000){lastCS=now;Math.random()<.4?SFX.meow():SFX.purr()}}
   c.giftT+=dt*(G.ff?3:1);
   if(c.happy>70&&c.trust>30&&c.giftT>60&&Math.random()<.001*dt*60){c.giftT=0;
     const gi=Math.floor(Math.random()*3);
@@ -491,125 +499,194 @@ function updCat(dt){const c=G.cat,w=G.weather.id;
     else if(gi===1){const fi=Math.floor(Math.random()*3);G.inv[fi]++;toast(`🎁 Mochi found ${FL[fi].em}!`)}
     else{addXP(20);toast('🎁 Mochi found ⭐20 XP!')}
     SFX.achieve();G.stats.giftsRcvd++;checkAch('cat_gift')}}
+
 // ══════════════════════════════════════
-// 🌾 FARM VIEW RENDERING (isometric)
+// 🌾 FARM VIEW RENDERING (TOP-DOWN STARDEW STYLE)
 // ══════════════════════════════════════
 function drawFarmView(){
   drawSky();
+  gx.save();
+  gx.translate(W/2,H/2);gx.scale(cam.zoom,cam.zoom);gx.translate(-cam.x,-cam.y);
   const fi=G.cFarm,farm=G.farms[fi];
-  // Farm grid: 4 cols x 3 rows, centered on screen
-  const ftw=72,fth=36;// tile size for farm plots
-  const fOX=W/2,fOY=H*.35;
-  // Helper: farm grid → screen
-  function fiso(c,r){return{x:fOX+(c-r)*ftw/2,y:fOY+(c+r)*fth/2}}
-
-  // Draw soil base diamond covering all plots with margin
-  const margin=ftw*.3;
-  const topPt=fiso(0,0),rightPt=fiso(3,0),botPt=fiso(3,2),leftPt=fiso(0,2);
-  gx.fillStyle='#8a6a40';gx.beginPath();
-  gx.moveTo(topPt.x,topPt.y-fth-margin);
-  gx.lineTo(rightPt.x+ftw/2+margin,rightPt.y);
-  gx.lineTo(botPt.x,botPt.y+fth+margin);
-  gx.lineTo(leftPt.x-ftw/2-margin,leftPt.y);
-  gx.closePath();gx.fill();
-  // Soil furrow lines (contained within diamond)
-  gx.save();gx.beginPath();
-  gx.moveTo(topPt.x,topPt.y-fth);gx.lineTo(rightPt.x+ftw/2,rightPt.y);
-  gx.lineTo(botPt.x,botPt.y+fth);gx.lineTo(leftPt.x-ftw/2,leftPt.y);
-  gx.closePath();gx.clip();
-  gx.strokeStyle='rgba(100,75,45,.15)';gx.lineWidth=1;
-  for(let i=-8;i<=8;i++){const ox=i*ftw*.22;gx.beginPath();gx.moveTo(fOX+ox-ftw*3,fOY);gx.lineTo(fOX+ox+ftw*3,fOY+4);gx.stroke()}
-  gx.restore();
-  // Wood fence
-  gx.strokeStyle='#a08060';gx.lineWidth=2.5;gx.lineCap='round';gx.beginPath();
-  gx.moveTo(topPt.x,topPt.y-fth-margin-4);
-  gx.lineTo(rightPt.x+ftw/2+margin+4,rightPt.y);
-  gx.lineTo(botPt.x,botPt.y+fth+margin+4);
-  gx.lineTo(leftPt.x-ftw/2-margin-4,leftPt.y);
-  gx.closePath();gx.stroke();
-  // Second rail
-  gx.strokeStyle='#b09070';gx.lineWidth=1.5;gx.beginPath();
-  gx.moveTo(topPt.x,topPt.y-fth-margin-10);
-  gx.lineTo(rightPt.x+ftw/2+margin+8,rightPt.y-2);
-  gx.lineTo(botPt.x,botPt.y+fth+margin);
-  gx.lineTo(leftPt.x-ftw/2-margin-8,leftPt.y-2);
-  gx.closePath();gx.stroke();
-
-  // Draw each plot in correct isometric order (back to front)
+  const ox=-FPAD,oy=-FPAD,fw=FGRIDW+FPAD*2,fh=FGRIDH+FPAD*2;
+  // ─── Green grass background ───
+  gx.fillStyle='#5a9a38';gx.fillRect(ox,oy,fw,fh);
+  // Grass texture dots
+  gx.fillStyle='rgba(80,140,50,.3)';
+  for(let i=0;i<60;i++){const gx2=ox+Math.sin(i*7.3)*fw*.48+fw/2,gy2=oy+Math.cos(i*5.1)*fh*.48+fh/2;
+    gx.beginPath();gx.arc(gx2,gy2,1.5,0,Math.PI*2);gx.fill()}
+  gx.fillStyle='rgba(100,170,60,.2)';
+  for(let i=0;i<30;i++){const gx2=ox+((i*37+13)%fw),gy2=oy+((i*53+7)%fh);
+    gx.fillRect(gx2,gy2,1,3)}
+  // ─── Dirt area behind plots ───
+  const dx=-12,dy=-12,dw=FGRIDW+24,dh=FGRIDH+24;
+  gx.fillStyle='#c8a050';gx.beginPath();gx.roundRect(dx,dy,dw,dh,8);gx.fill();
+  // Dirt texture
+  gx.fillStyle='rgba(160,120,60,.2)';
+  for(let i=0;i<40;i++){const px=dx+((i*29+5)%dw),py=dy+((i*41+11)%dh);
+    gx.beginPath();gx.ellipse(px,py,2+Math.sin(i)*.8,1.2,.3*i,0,Math.PI*2);gx.fill()}
+  gx.fillStyle='rgba(180,140,70,.15)';
+  for(let i=0;i<25;i++){const px=dx+((i*43+9)%dw),py=dy+((i*31+17)%dh);
+    gx.fillRect(px,py,1,1)}
+  // ─── Wooden fence ───
+  const fenceX=dx-6,fenceY=dy-6,fenceW=dw+12,fenceH=dh+12;
+  // Fence posts (vertical)
+  const postColor='#8a6a3a',darkPost='#6a5028',railColor='#a07840',darkRail='#7a5a2a';
+  const postW=6,postH=16;
+  for(let side=0;side<4;side++){
+    const isH=side<2;// horizontal sides (top/bottom)
+    const count=isH?6:5;
+    for(let i=0;i<=count;i++){
+      let px,py;
+      if(side===0){px=fenceX+i*(fenceW/count);py=fenceY}// top
+      else if(side===1){px=fenceX+i*(fenceW/count);py=fenceY+fenceH}// bottom
+      else if(side===2){px=fenceX;py=fenceY+i*(fenceH/count)}// left
+      else{px=fenceX+fenceW;py=fenceY+i*(fenceH/count)}// right
+      // Post shadow
+      gx.fillStyle='rgba(60,40,20,.15)';gx.fillRect(px-postW/2+2,py-2,postW,postH+2);
+      // Post body
+      gx.fillStyle=postColor;gx.fillRect(px-postW/2,py-postH/2,postW,postH);
+      gx.fillStyle=darkPost;gx.fillRect(px-postW/2,py-postH/2,postW/2,postH);
+      // Post cap
+      gx.fillStyle='#9a7a48';gx.fillRect(px-postW/2-1,py-postH/2-2,postW+2,3);
+    }
+  }
+  // Horizontal rails (top & bottom)
+  for(const ry of [fenceY-2, fenceY+fenceH+2]){
+    gx.fillStyle=railColor;gx.fillRect(fenceX,ry-2,fenceW,4);
+    gx.fillStyle=darkRail;gx.fillRect(fenceX,ry,fenceW,2);
+  }
+  // Vertical rails (left & right)
+  for(const rx of [fenceX-2, fenceX+fenceW+2]){
+    gx.fillStyle=railColor;gx.fillRect(rx-2,fenceY,4,fenceH);
+    gx.fillStyle=darkRail;gx.fillRect(rx,fenceY,2,fenceH);
+  }
+  // ─── Plot grid (4×3) ───
   for(let r=0;r<3;r++){for(let c=0;c<4;c++){
     const pi=r*4+c,p=farm.plots[pi];
-    const{x:px,y:py}=fiso(c,r);
-    const tw=ftw*.88,th=fth*.88;
+    const{x:cx,y:cy}=fgrid(c,r);
+    const hw=FPW/2,hh=FPH/2;
+    const left=cx-hw,top=cy-hh;
+    // Store screen coords for click detection
+    farm.plots[pi]._sx=cx;farm.plots[pi]._sy=cy;farm.plots[pi]._tw=FPW;farm.plots[pi]._th=FPH;
     if(p.dmg){
-      drawTile(px,py,tw,th,'#5a4a38');
-      gx.font='16px serif';gx.textAlign='center';gx.fillText('💀',px,py+5);
+      // Damaged plot
+      gx.fillStyle='#6a5a3a';gx.fillRect(left,top,FPW,FPH);
+      gx.fillStyle='#5a4a2a';for(let i=0;i<3;i++)gx.fillRect(left+4,top+i*(FPH/3)+4,FPW-8,2);
+      gx.font='22px serif';gx.textAlign='center';gx.textBaseline='middle';gx.fillText('💀',cx,cy);
     }else if(p.fi>=0){
-      // Planted - show soil
-      drawTile(px,py,tw,th,p.wet?'#6a5030':'#8a6a40');
-      // Growth stages
+      // Tilled soil with crop
+      const soilBase=p.wet?'#7a5a28':'#9a7a3a';
+      const soilDark=p.wet?'#6a4a1a':'#8a6a2a';
+      gx.fillStyle=soilBase;gx.fillRect(left,top,FPW,FPH);
+      // Furrow lines (horizontal tilled rows)
+      gx.fillStyle=soilDark;
+      for(let i=0;i<5;i++){const fy=top+8+i*(FPH-16)/4;
+        gx.fillRect(left+3,fy,FPW-6,3);
+        gx.fillStyle='rgba(100,70,30,.15)';gx.fillRect(left+3,fy+3,FPW-6,1);gx.fillStyle=soilDark}
+      // Soil edge shadow
+      gx.fillStyle='rgba(60,40,15,.12)';gx.fillRect(left,top,FPW,2);gx.fillRect(left,top,2,FPH);
+      gx.fillStyle='rgba(180,150,80,.1)';gx.fillRect(left,top+FPH-2,FPW,2);gx.fillRect(left+FPW-2,top,2,FPH);
+      // Draw crop
       const fl=FL[p.fi],prog=p.pr;
-      if(prog<.25){// Seedling - tiny green bump
-        gx.fillStyle='#80b060';gx.beginPath();gx.arc(px,py-3,2,0,Math.PI*2);gx.fill();
-        gx.strokeStyle='#60a040';gx.lineWidth=1;gx.beginPath();gx.moveTo(px,py);gx.lineTo(px,py-3);gx.stroke()}
-      else if(prog<.5){// Sprout - stem + leaves
-        gx.strokeStyle='#60a040';gx.lineWidth=1.5;gx.beginPath();gx.moveTo(px,py);gx.lineTo(px,py-8);gx.stroke();
-        gx.fillStyle='#70b050';gx.beginPath();gx.ellipse(px-3,py-6,4,2,.3,0,Math.PI*2);gx.fill();
-        gx.beginPath();gx.ellipse(px+3,py-7,3.5,1.8,-.3,0,Math.PI*2);gx.fill()}
-      else if(prog<1){// Growing - taller, more leaves
-        gx.strokeStyle='#509030';gx.lineWidth=2;gx.beginPath();gx.moveTo(px,py);gx.lineTo(px,py-14);gx.stroke();
-        gx.fillStyle='#60a040';gx.beginPath();gx.ellipse(px-4,py-10,5,2.5,.4,0,Math.PI*2);gx.fill();
-        gx.beginPath();gx.ellipse(px+4,py-12,4.5,2.2,-.3,0,Math.PI*2);gx.fill();
-        gx.beginPath();gx.ellipse(px-3,py-14,3.5,2,.2,0,Math.PI*2);gx.fill();
-        // Bud
-        gx.fillStyle=fl.cl+'80';gx.beginPath();gx.arc(px,py-16,3,0,Math.PI*2);gx.fill()}
-      else{// Fully grown - bloom!
-        gx.strokeStyle='#409020';gx.lineWidth=2;gx.beginPath();gx.moveTo(px,py);gx.lineTo(px,py-16);gx.stroke();
-        gx.fillStyle='#50a030';
-        gx.beginPath();gx.ellipse(px-4,py-10,5,2.5,.4,0,Math.PI*2);gx.fill();
-        gx.beginPath();gx.ellipse(px+4,py-12,4.5,2.2,-.3,0,Math.PI*2);gx.fill();
-        gx.beginPath();gx.ellipse(px-3,py-14,3.5,2,.2,0,Math.PI*2);gx.fill();
-        // Flower head
+      const pSeed=pi*7+fi*13,rotV=Math.sin(pSeed)*.05,scV=.92+Math.sin(pSeed+3)*.1;
+      gx.save();gx.translate(cx,cy+hh*.3);gx.rotate(rotV);gx.scale(scV,scV);
+      if(prog<.25){// Seeds just planted
+        gx.fillStyle='#7a6030';gx.beginPath();gx.ellipse(0,0,6,3,0,0,Math.PI*2);gx.fill();
+        gx.strokeStyle='#70a040';gx.lineWidth=1.5;gx.beginPath();gx.moveTo(0,0);gx.lineTo(0,-8);gx.stroke();
+        gx.fillStyle='#80b848';gx.beginPath();gx.ellipse(-3,-8,3.5,2,.4,0,Math.PI*2);gx.fill();
+        gx.beginPath();gx.ellipse(3,-9,3,1.8,-.4,0,Math.PI*2);gx.fill();
+      }else if(prog<.5){// Sprout
         const sw=Math.sin(G.time*1.5+pi)*1.5;
-        gx.fillStyle=fl.cl;gx.beginPath();gx.arc(px+sw,py-20,6,0,Math.PI*2);gx.fill();
-        gx.fillStyle='#f8f0a0';gx.beginPath();gx.arc(px+sw,py-20,2.5,0,Math.PI*2);gx.fill();
-        // Sparkle
-        if(Math.sin(G.time*4+pi*2)>.6){gx.fillStyle='rgba(255,255,200,.6)';gx.beginPath();
-          const stx=px+sw+6,sty=py-24;for(let s=0;s<4;s++){const a=s*Math.PI/2+G.time*3;gx.moveTo(stx+Math.cos(a)*4,sty+Math.sin(a)*4);gx.lineTo(stx+Math.cos(a)*1,sty+Math.sin(a)*1)}gx.fill()}}
+        gx.strokeStyle='#509030';gx.lineWidth=2.5;gx.beginPath();gx.moveTo(0,0);gx.lineTo(sw,-20);gx.stroke();
+        gx.fillStyle='#60a838';
+        gx.beginPath();gx.ellipse(-6+sw,-13,8,3.5,.3,0,Math.PI*2);gx.fill();
+        gx.beginPath();gx.ellipse(6+sw,-16,7,3,-.3,0,Math.PI*2);gx.fill();
+        gx.fillStyle='#70b848';gx.beginPath();gx.ellipse(sw,-20,4,2,.1,0,Math.PI*2);gx.fill();
+      }else if(prog<1){// Budding
+        const sw=Math.sin(G.time*1.5+pi)*2;
+        gx.strokeStyle='#408828';gx.lineWidth=3;gx.beginPath();gx.moveTo(0,0);gx.lineTo(sw,-28);gx.stroke();
+        gx.fillStyle='#509830';
+        gx.beginPath();gx.ellipse(-7+sw,-16,9,4,.4,0,Math.PI*2);gx.fill();
+        gx.beginPath();gx.ellipse(7+sw,-20,8,3.5,-.3,0,Math.PI*2);gx.fill();
+        gx.beginPath();gx.ellipse(-3+sw,-25,5,2.5,.2,0,Math.PI*2);gx.fill();
+        // Bud
+        gx.fillStyle=fl.cl+'88';gx.beginPath();gx.arc(sw,-30,6,0,Math.PI*2);gx.fill();
+        gx.fillStyle=fl.cl+'44';gx.beginPath();gx.arc(sw,-30,3.5,0,Math.PI*2);gx.fill();
+      }else{// Full bloom!
+        const sw=Math.sin(G.time*1.2+pi)*3;
+        gx.strokeStyle='#388020';gx.lineWidth=3;gx.beginPath();gx.moveTo(0,0);gx.lineTo(sw,-28);gx.stroke();
+        gx.fillStyle='#48a028';
+        gx.beginPath();gx.ellipse(-7+sw,-16,9,4,.4,0,Math.PI*2);gx.fill();
+        gx.beginPath();gx.ellipse(7+sw,-20,8,3.5,-.3,0,Math.PI*2);gx.fill();
+        gx.beginPath();gx.ellipse(-3+sw,-25,5,2.5,.2,0,Math.PI*2);gx.fill();
+        // Flower head
+        const fhx=sw,fhy=-34;gx.fillStyle=fl.cl;
+        for(let pp=0;pp<6;pp++){const a=pp*Math.PI/3+G.time*.2;
+          gx.beginPath();gx.ellipse(fhx+Math.cos(a)*6,fhy+Math.sin(a)*6,6,3.5,a,0,Math.PI*2);gx.fill()}
+        gx.fillStyle='#f8e860';gx.beginPath();gx.arc(fhx,fhy,4,0,Math.PI*2);gx.fill();
+        // Sparkles
+        if(Math.sin(G.time*4+pi*2)>.6){gx.fillStyle='rgba(255,255,200,.8)';
+          for(let s=0;s<4;s++){const a=s*Math.PI/2+G.time*3;
+            gx.beginPath();gx.arc(fhx+Math.cos(a)*10,fhy+Math.sin(a)*10,2,0,Math.PI*2);gx.fill()}}}
+      gx.restore();
       // Progress bar
-      if(prog<1){const bw=tw*.5,bh=3;gx.fillStyle='rgba(0,0,0,.2)';gx.fillRect(px-bw/2,py+th*.3,bw,bh);
-        gx.fillStyle='#80c060';gx.fillRect(px-bw/2,py+th*.3,bw*prog,bh)}
+      if(prog<1){const bw=FPW*.7,bh=5;const barX=cx-bw/2,barY=cy+hh+4;
+        gx.fillStyle='rgba(0,0,0,.3)';gx.beginPath();gx.roundRect(barX,barY,bw,bh,2);gx.fill();
+        gx.fillStyle='#70c040';gx.beginPath();gx.roundRect(barX,barY,bw*prog,bh,2);gx.fill()}
     }else{
-      // Empty plot - lighter soil
-      drawTile(px,py,tw,th,'#a0845c');
-      gx.fillStyle='rgba(180,160,130,.3)';gx.font='14px serif';gx.textAlign='center';gx.fillText('+',px,py+5)}
-    // Store click region for this plot
-    farm.plots[pi]._sx=px;farm.plots[pi]._sy=py;farm.plots[pi]._tw=tw;farm.plots[pi]._th=th}}
-  // Draw cat on farm
-  const cps=iso(G.player.gx,G.player.gy);
+      // Empty plot — tilled soil waiting for seeds
+      const emptyBase=(r+c)%2===0?'#b8983c':'#b09038';
+      gx.fillStyle=emptyBase;gx.fillRect(left,top,FPW,FPH);
+      // Lighter furrow lines
+      gx.fillStyle='rgba(160,130,60,.2)';
+      for(let i=0;i<5;i++){const fy=top+8+i*(FPH-16)/4;gx.fillRect(left+3,fy,FPW-6,2)}
+      // Border
+      gx.strokeStyle='rgba(140,110,50,.3)';gx.lineWidth=1;gx.strokeRect(left+.5,top+.5,FPW-1,FPH-1);
+      // Plus marker
+      gx.strokeStyle='rgba(180,160,100,.5)';gx.lineWidth=2;
+      gx.beginPath();gx.moveTo(cx-8,cy);gx.lineTo(cx+8,cy);gx.stroke();
+      gx.beginPath();gx.moveTo(cx,cy-8);gx.lineTo(cx,cy+8);gx.stroke()}
+  }}
+  // ─── Decorative elements around farm ───
+  // Small flowers in grass
+  const decoColors=['#f5e642','#ff6b8a','#b388ff','#ffa726','#f8bbd0'];
+  for(let i=0;i<12;i++){
+    const angle=i*Math.PI*2/12,radius=Math.max(FGRIDW,FGRIDH)/2+FPAD*.65;
+    const fx=FGRIDW/2+Math.cos(angle+fi*.5)*radius*(1+Math.sin(i*2.3)*.2);
+    const fy=FGRIDH/2+Math.sin(angle+fi*.5)*radius*(1+Math.cos(i*1.7)*.2);
+    gx.fillStyle=decoColors[i%5];gx.beginPath();gx.arc(fx,fy,3,0,Math.PI*2);gx.fill();
+    gx.fillStyle='rgba(60,100,30,.4)';gx.fillRect(fx-.5,fy+3,1,4)}
+  // Small rocks
+  for(let i=0;i<5;i++){
+    const rx2=ox+15+((i*67+23)%fw),ry2=oy+15+((i*89+31)%fh);
+    if(rx2>dx&&rx2<dx+dw&&ry2>dy&&ry2<dy+dh)continue;// skip if inside dirt
+    gx.fillStyle='#8a8878';gx.beginPath();gx.ellipse(rx2,ry2,4+Math.sin(i)*2,3,.2*i,0,Math.PI*2);gx.fill();
+    gx.fillStyle='#9a9888';gx.beginPath();gx.ellipse(rx2-1,ry2-1,2,1.5,.2*i,0,Math.PI*2);gx.fill()}
+  // Cat
   drawCatISO(G.cat.x,G.cat.y);
-  // Farm name
-  gx.fillStyle='rgba(255,248,240,.8)';gx.font='600 14px Fredoka';gx.textAlign='center';
-  gx.fillText(`🌾 Farm ${fi+1}`,W/2,H*.1);
-  drawParts()}
+  drawParts();
+  gx.restore();
+  // Farm label (screen space)
+  gx.fillStyle='rgba(255,248,240,.85)';gx.font='600 14px Fredoka';gx.textAlign='center';
+  gx.fillText(`🌾 Farm ${fi+1}`,W/2,H*.08)}
 
 // ══════════════════════════════════════
 // 🏘️ VILLAGE VIEW RENDERING
 // ══════════════════════════════════════
 function drawVillage(){
   drawSky();
-  // Sort and draw tiles back to front (row by row, col by col)
+  gx.save();
+  gx.translate(W/2,H/2);gx.scale(cam.zoom,cam.zoom);gx.translate(-cam.x,-cam.y);
   const renderList=[];
   for(let gy=0;gy<10;gy++){for(let gxi=0;gxi<10;gxi++){
     const{x:sx,y:sy}=iso(gxi,gy);const tile=VMAP[gy][gxi];
     renderList.push({gx:gxi,gy,sx,sy,tile,depth:gxi+gy})}}
-  // Add player and cat to render list
   const ps=iso(G.player.gx,G.player.gy);
-  renderList.push({type:'player',sx:ps.x,sy:ps.y-8,depth:G.player.gx+G.player.gy+.6});
-  // Cat depth based on its screen position converted back to grid
-  const catGrid=uniso(G.cat.x,G.cat.y);
-  renderList.push({type:'cat',sx:G.cat.x,sy:G.cat.y,depth:catGrid.gx+catGrid.gy+.5});
+  renderList.push({type:'player',sx:ps.x,sy:ps.y,depth:G.player.gx+G.player.gy+.6});
+  const catG=uniso(G.cat.x,G.cat.y);
+  renderList.push({type:'cat',sx:G.cat.x,sy:G.cat.y,depth:catG.gx+catG.gy+.55});
   renderList.sort((a,b)=>a.depth-b.depth);
-  
   for(const item of renderList){
     if(item.type==='player'){drawPlayer(item.sx,item.sy);continue}
     if(item.type==='cat'){drawCatISO(item.sx,item.sy);continue}
@@ -617,71 +694,57 @@ function drawVillage(){
     switch(tile){
       case 0:case 7:drawGrassTile(sx,sy,tgx*10+tgy);if(tile===7)drawFlowerPatchISO(sx,sy);break;
       case 1:drawPathTile(sx,sy);break;
-      case 2:{// Farm
-        const fi=FARM_POS.findIndex(f=>f.gx===tgx&&f.gy===tgy);
+      case 2:{const fi=FARM_POS.findIndex(f=>f.gx===tgx&&f.gy===tgy);
         if(fi>=0)drawFarmTile(sx,sy,fi,G.farms[fi].unlocked);else drawGrassTile(sx,sy,tgx*10+tgy);break}
-      case 3:drawGrassTile(sx,sy,tgx*10+tgy);drawHouseISO(sx,sy-TH*.15);break;
-      case 4:drawGrassTile(sx,sy,tgx*10+tgy);drawShopISO(sx,sy-TH*.2);break;
-      case 5:drawGrassTile(sx,sy,tgx*10+tgy);drawTreeISO(sx,sy-TH*.1,tgx+tgy);break;
+      case 3:drawGrassTile(sx,sy,tgx*10+tgy);drawHouseISO(sx,sy-TH*.1);break;
+      case 4:drawGrassTile(sx,sy,tgx*10+tgy);drawShopISO(sx,sy-TH*.15);break;
+      case 5:drawGrassTile(sx,sy,tgx*10+tgy);drawTreeISO(sx,sy-TH*.05,tgx+tgy);break;
       case 6:drawTile(sx,sy,TW,TH,'#5a90b0');break;
       default:drawGrassTile(sx,sy,tgx*10+tgy)}}
-  // Farm labels
   for(let fi=0;fi<5;fi++){const fp=FARM_POS[fi],{x:sx,y:sy}=iso(fp.gx,fp.gy);
-    if(G.farms[fi].unlocked){gx.fillStyle='rgba(255,248,240,.75)';gx.font='600 9px Fredoka';gx.textAlign='center';gx.fillText(`Farm ${fi+1}`,sx,sy+TH*.6)}}
-  drawParts()}
+    if(G.farms[fi].unlocked){gx.fillStyle='rgba(255,248,240,.7)';gx.font='600 10px Fredoka';gx.textAlign='center';gx.fillText(`Farm ${fi+1}`,sx,sy+TH*.6)}}
+  drawParts();
+  gx.restore()}
 
 // ══════════════════════════════════════
-// ⚙️ GAME LOGIC
+// ⚙️ GAME LOGIC (unchanged)
 // ══════════════════════════════════════
 function updWeather(dt){G.wT+=dt*(G.ff?3:1);if(G.wT>=G.wDur){G.wT=0;G.wDur=50+Math.random()*60;
   let nw;if(G.stormCt>=2){nw=WS[Math.floor(Math.random()*3)];G.stormCt=0}
   else{const r=Math.random();nw=r<.25?WS[0]:r<.45?WS[1]:r<.7?WS[2]:r<.88?WS[3]:WS[4]}
   if(nw.id==='storm'){G.stormCt++;SFX.storm();G.stats.stormsWeathered++;checkAch('storm_5')}else if(nw.id==='sunny')SFX.sunny();
   G.weather=nw;updUI();updRainA()}}
-
 function updGrowth(dt){const mul=G.weather.gm*(1+(G.tools.ft-1)*.15)*(G.level>=25?1.5:1);
   for(const farm of G.farms){if(!farm.unlocked)continue;
     for(const p of farm.plots){if(p.fi<0||p.dmg)continue;
       let gm=mul;if(p.wet)gm*=1.1;p.pr=Math.min(1,p.pr+dt*(G.ff?3:1)/FL[p.fi].gt*gm)}}}
-
 let stormT=0;
 function updStorm(dt){if(G.weather.id!=='storm')return;stormT+=dt*(G.ff?3:1);
   if(stormT>3+Math.random()*5){stormT=0;SFX.thunder();
     if(G.tools.ss<2){for(const farm of G.farms){if(!farm.unlocked)continue;
       for(const p of farm.plots){if(p.fi>=0&&!p.dmg&&Math.random()<.04){p.dmg=true;SFX.damage()}}}}}}
-
 function updDay(dt){G.dayT+=dt*(G.ff?3:1);G.tt+=dt*(G.ff?3:1);
   if(G.dayT>=120){G.dayT=0;G.day++;SFX.newDay();updUI();checkAch('day_7');
-    // Auto-water if watering can >= 2
     if(G.tools.wc>=2){for(const farm of G.farms){if(!farm.unlocked)continue;for(const p of farm.plots)if(p.fi>=0&&!p.dmg)p.wet=true}}
-    // Bankruptcy check
     const hasAssets=G.farms.some(f=>f.unlocked&&f.plots.some(p=>p.fi>=0))||G.inv.some(n=>n>0);
     if(G.coins<5&&!hasAssets){G.coins+=50;updUI();toast('💝 Village fund: +50🪙')}}}
-
 function updOrders(dt){for(let i=G.orders.length-1;i>=0;i--){
   G.orders[i].t-=dt*(G.ff?3:1);if(G.orders[i].t<=0){G.orders.splice(i,1);SFX.expired();toast('⏰ Order expired!')}}
-  G.oCd-=dt*(G.ff?3:1);
-  if(G.orders.length<3&&G.oCd<=0){G.oCd=12;genOrder()}}
-
+  G.oCd-=dt*(G.ff?3:1);if(G.orders.length<3&&G.oCd<=0){G.oCd=12;genOrder()}}
 function genOrder(){
   const mxT=Math.min(Math.floor(1+G.farms.filter(f=>f.unlocked).length*1.5+G.day*.3),9);
-  if(Math.random()<.65){// Flower order
-    const fi=Math.floor(Math.random()*(mxT+1));if(FL[fi].ul>G.level)return;
+  if(Math.random()<.65){const fi=Math.floor(Math.random()*(mxT+1));if(FL[fi].ul>G.level)return;
     const ct=1+Math.floor(Math.random()*3);const tl=90+ct*25+fi*10;
     G.orders.push({type:'flower',desc:`${ct}× ${FL[fi].em} ${FL[fi].nm}`,req:{[fi]:ct},rw:Math.floor(FL[fi].sv*ct*1.2),tl,t:tl})}
-  else{// Bouquet order
-    const avail=RCP.filter(r=>r.ul<=G.level);if(!avail.length)return;
+  else{const avail=RCP.filter(r=>r.ul<=G.level);if(!avail.length)return;
     const r=avail[Math.floor(Math.random()*avail.length)];
     G.orders.push({type:'bouquet',desc:`📦 ${r.nm}`,req:{recipe:RCP.indexOf(r)},rw:Math.floor(r.pr*1.3),tl:180,t:180})}}
 
-// ══════════════════════════════════════
-// 🏅 XP + LEVELS + ACHIEVEMENTS
-// ══════════════════════════════════════
+// XP + Levels + Achievements (unchanged)
 function addXP(n){G.xp+=n;while(G.xp>=XP_TABLE[G.level-1]&&G.level<30){G.xp-=XP_TABLE[G.level-1];G.level++;
   SFX.levelUp();const p=document.getElementById('lvlPop');document.getElementById('lvlN').textContent=G.level;
   document.getElementById('lvlU').textContent=LV_UNLOCKS[G.level]||'';p.classList.add('show');setTimeout(()=>p.classList.remove('show'),2500);
   if(G.level>=10)checkAch('level_10');if(G.level>=20)checkAch('level_20')}updUI()}
-
 function checkAch(id){if(G.achievements.has(id))return;
   const a=ACHS.find(a=>a.id===id);if(!a)return;let earned=false;
   switch(id){
@@ -699,90 +762,63 @@ function checkAch(id){if(G.achievements.has(id))return;
   document.getElementById('achT').textContent=a.nm;document.getElementById('achS').textContent=`+${a.rw}🪙 +${Math.floor(a.rw/2)}⭐`;
   p.classList.add('show');setTimeout(()=>p.classList.remove('show'),2800);updUI()}
 
-// ══════════════════════════════════════
-// 🎯 ACTIONS
-// ══════════════════════════════════════
+// Actions (unchanged)
 function plantSeed(fi){if(G.sPlot<0)return;const farm=G.farms[G.cFarm],p=farm.plots[G.sPlot];
   if(p.fi>=0||p.dmg)return;const fl=FL[fi];if(G.coins<fl.sc||fl.ul>G.level)return;
   G.coins-=fl.sc;p.fi=fi;p.pr=0;p.wet=false;SFX.plant();closeSeedSel();updUI()}
-
 function harvestPlot(pi){const farm=G.farms[G.cFarm],p=farm.plots[pi];
   if(p.dmg){p.dmg=false;p.fi=-1;p.pr=0;SFX.click();return}
   if(p.fi<0||p.pr<1)return;const fl=FL[p.fi];
   const lucky=Math.random()<(G.cat.happy>70?.15:.05);
   const ct=lucky?2:1;G.inv[p.fi]+=ct;G.stats.harvested+=ct;
-  addXP(Math.floor(fl.sv/2));G.stats.coinsEarned+=0;// coins from selling, not harvesting
-  SFX.harvest();addP('sparkle',p._sx,p._sy-10,3);
+  addXP(Math.floor(fl.sv/2));SFX.harvest();addP('sparkle',p._sx,p._sy-10,3);
   if(lucky){SFX.lucky();G.stats.luckyHarvests++;toast(`🍀 Lucky! 2× ${fl.em}!`);checkAch('lucky_10')}
-  p.fi=-1;p.pr=0;p.wet=false;
-  checkAch('first_harvest');checkAch('flowers_50');checkAch('flowers_200');updUI()}
-
-function harvestAll(){const farm=G.farms[G.cFarm];
-  for(let i=0;i<12;i++)if(farm.plots[i].fi>=0&&farm.plots[i].pr>=1)harvestPlot(i)}
-
-function sellFlower(fi){if(G.inv[fi]<=0)return;G.inv[fi]--;const v=FL[fi].sv;
-  G.coins+=v;G.stats.coinsEarned+=v;SFX.coin();checkAch('coins_1000');updUI()}
-
+  p.fi=-1;p.pr=0;p.wet=false;checkAch('first_harvest');checkAch('flowers_50');checkAch('flowers_200');updUI()}
+function harvestAll(){const farm=G.farms[G.cFarm];for(let i=0;i<12;i++)if(farm.plots[i].fi>=0&&farm.plots[i].pr>=1)harvestPlot(i)}
+function sellFlower(fi){if(G.inv[fi]<=0)return;G.inv[fi]--;const v=FL[fi].sv;G.coins+=v;G.stats.coinsEarned+=v;SFX.coin();checkAch('coins_1000');updUI()}
 function fulfillOrder(oi){const o=G.orders[oi];if(!o)return;
-  if(o.type==='flower'){for(const[fi,ct]of Object.entries(o.req)){if(G.inv[fi]<ct)return}
-    for(const[fi,ct]of Object.entries(o.req))G.inv[fi]-=ct}
-  else{// bouquet
-    const ri=o.req.recipe,r=RCP[ri];if(!canCraftRecipe(r))return;deductRecipe(r)}
+  if(o.type==='flower'){for(const[fi,ct]of Object.entries(o.req)){if(G.inv[fi]<ct)return}for(const[fi,ct]of Object.entries(o.req))G.inv[fi]-=ct}
+  else{const ri=o.req.recipe,r=RCP[ri];if(!canCraftRecipe(r))return;deductRecipe(r)}
   G.coins+=o.rw;G.stats.coinsEarned+=o.rw;G.stats.ordersCompleted++;addXP(15+Math.floor(o.rw/10));
-  SFX.orderDone();addP('coin',W/2,H/2,5);G.orders.splice(oi,1);
-  checkAch('first_order');checkAch('coins_1000');updUI()}
-
+  SFX.orderDone();addP('coin',W/2,H/2,5);G.orders.splice(oi,1);checkAch('first_order');checkAch('coins_1000');updUI()}
 function canCraftRecipe(r){if(r.fl==='any5'){let ct=0;for(let i=0;i<10;i++)if(G.inv[i]>0)ct++;return ct>=5}
   for(const[fi,ct]of Object.entries(r.fl))if(G.inv[fi]<ct)return false;return true}
 function deductRecipe(r){if(r.fl==='any5'){let ct=0;for(let i=0;i<10;i++){if(G.inv[i]>0&&ct<5){G.inv[i]--;ct++}}}
   else{for(const[fi,ct]of Object.entries(r.fl))G.inv[fi]-=ct}}
-
 function craftBouquet(ri){const r=RCP[ri];if(r.ul>G.level||!canCraftRecipe(r))return;
   deductRecipe(r);G.coins+=r.pr;G.stats.coinsEarned+=r.pr;G.stats.bouquetsMade++;
   G.stats.recipeCrafted.add(ri);addXP(Math.floor(r.pr/8)+10);SFX.bouquet();addP('sparkle',W/2,H/2,5);
   checkAch('first_bouquet');checkAch('coins_1000');updUI()}
-
 function upgradeTool(tid){const t=TOOLS.find(t=>t.id===tid);if(!t)return;
   const cl=G.tools[tid],nl=cl+1;if(nl>t.mx)return;
   const cost=t.costs[cl];if(G.coins<cost||t.ul[cl]>G.level)return;
   G.coins-=cost;G.tools[tid]=nl;SFX.upgrade();addXP(20);updUI()}
-
 function feedCat(fid){const f=CAT_FOOD.find(f=>f.id===fid);if(!f||G.coins<f.cost)return;
   G.coins-=f.cost;const c=G.cat;c.hunger=Math.min(100,c.hunger+f.h);c.happy=Math.min(100,c.happy+f.hp);
   c.trust=Math.min(100,c.trust+f.tr);c.feedCt++;G.stats.catFed++;
-  SFX.catFeed();addP('heart',G.cat.x,G.cat.y-15,2);
-  checkAch('cat_feed_10');checkAch('cat_trust_max');updUI()}
-
+  SFX.catFeed();addP('heart',G.cat.x,G.cat.y-15,2);checkAch('cat_feed_10');checkAch('cat_trust_max');updUI()}
 function petCat(){const c=G.cat;c.happy=Math.min(100,c.happy+3);c.trust=Math.min(100,c.trust+.5);c.petCt++;
   addXP(1);SFX.catPet();addP('heart',c.x,c.y-15,3);checkAch('cat_trust_max');updUI()}
-
 function buyCatAcc(aid){const a=CAT_ACC.find(a=>a.id===aid);if(!a||G.coins<a.cost||a.ul>G.level||G.cat.acc.includes(aid))return;
   G.coins-=a.cost;G.cat.acc.push(aid);G.cat.eq.push(aid);SFX.unlock();updUI()}
-
-function toggleCatAcc(aid){if(!G.cat.acc.includes(aid))return;
-  const i=G.cat.eq.indexOf(aid);if(i>=0)G.cat.eq.splice(i,1);else G.cat.eq.push(aid);SFX.click()}
-
-function buyFarm(fi){if(G.coins<FCOST[fi]||G.farms[fi].unlocked)return;
-  G.coins-=FCOST[fi];G.farms[fi].unlocked=true;SFX.unlock();checkAch('all_farms');updUI()}
-
+function toggleCatAcc(aid){if(!G.cat.acc.includes(aid))return;const i=G.cat.eq.indexOf(aid);if(i>=0)G.cat.eq.splice(i,1);else G.cat.eq.push(aid);SFX.click()}
+function buyFarm(fi){if(G.coins<FCOST[fi]||G.farms[fi].unlocked)return;G.coins-=FCOST[fi];G.farms[fi].unlocked=true;SFX.unlock();checkAch('all_farms');updUI()}
 function toggleFF(){G.ff=!G.ff;SFX.ff(G.ff);document.getElementById('ffB').classList.toggle('on',G.ff)}
-
 function enterFarm(fi){if(!G.farms[fi].unlocked)return;G.cFarm=fi;G.view='farm';
   document.getElementById('farmUI').style.display='block';document.getElementById('dock').style.display='none';
-  // Move cat near farm
-  G.cat.tx=W/2+50;G.cat.ty=H*.48;G.cat.x=W/2+50;G.cat.y=H*.48;SFX.trans()}
-
+  autoZoom();cam.tx=FGRIDW/2;cam.ty=FGRIDH/2;
+  G.cat.x=FGRIDW+FPAD*.5;G.cat.y=FGRIDH+FPAD*.3;G.cat.tx=G.cat.x;G.cat.ty=G.cat.y;SFX.trans()}
 function exitFarm(){G.view='village';document.getElementById('farmUI').style.display='none';
-  document.getElementById('dock').style.display='flex';initCatPos();SFX.trans();closeSeedSel()}
+  document.getElementById('dock').style.display='flex';autoZoom();initCatPos();SFX.trans();closeSeedSel()}
+
 // ══════════════════════════════════════
-// 📱 UI PANELS
+// 📱 UI PANELS (unchanged)
 // ══════════════════════════════════════
 function updUI(){
   document.getElementById('coins').textContent=G.coins;document.getElementById('lvl').textContent=G.level;
   document.getElementById('dayN').textContent=G.day;document.getElementById('wI').textContent=G.weather.ic;
   document.getElementById('wL').textContent=G.weather.lb;
   const xpN=XP_TABLE[Math.min(G.level-1,29)];document.getElementById('xpF').style.width=(G.xp/xpN*100)+'%'}
-
 function op(panel){G.activePanel=panel;SFX.panelOpen();
   const c=document.getElementById('panelC');let h='<div class="ph"></div>';
   switch(panel){
@@ -793,198 +829,155 @@ function op(panel){G.activePanel=panel;SFX.panelOpen();
     h+='</div>';break;
   case'bouquet':h+=`<h2>💐 Bouquet Crafting</h2><button class="pc" onclick="cp()">✕</button>`;
     for(let ri=0;ri<RCP.length;ri++){const r=RCP[ri];const locked=r.ul>G.level;const can=!locked&&canCraftRecipe(r);
-      h+=`<div class="oc" style="opacity:${locked?.35:1}">
-        <div style="font-weight:600;font-size:13px">${locked?'🔒 ':''} ${r.nm}</div>
-        <div style="font-size:10px;color:var(--tl);margin:3px 0">`;
-      if(r.fl==='any5')h+='Any 5 different flowers';
-      else for(const[fi,ct]of Object.entries(r.fl))h+=`${ct}× ${FL[fi].em} `;
-      h+=`</div><div class="br"><span class="price">${r.pr}🪙</span></div>
-        ${can?`<button class="fb" onclick="craftBouquet(${ri});op('bouquet')">Craft & Sell</button>`:''}
-        ${locked?`<div class="ft" style="margin-top:4px">Unlocks Lv${r.ul}</div>`:''}
-      </div>`}break;
+      h+=`<div class="oc" style="opacity:${locked?.35:1}"><div style="font-weight:600;font-size:13px">${locked?'🔒 ':''} ${r.nm}</div><div style="font-size:10px;color:var(--tl);margin:3px 0">`;
+      if(r.fl==='any5')h+='Any 5 different flowers';else for(const[fi,ct]of Object.entries(r.fl))h+=`${ct}× ${FL[fi].em} `;
+      h+=`</div><div class="br"><span class="price">${r.pr}🪙</span></div>${can?`<button class="fb" onclick="craftBouquet(${ri});op('bouquet')">Craft & Sell</button>`:''}</div>`}break;
   case'orders':h+=`<h2>📋 Orders</h2><button class="pc" onclick="cp()">✕</button>`;
     if(!G.orders.length)h+='<div class="et">No orders yet... wait a moment!</div>';
-    for(let i=0;i<G.orders.length;i++){const o=G.orders[i];
-      const tl=Math.ceil(o.t),col=tl<30?'var(--dn)':tl<60?'var(--ac)':'var(--ac2)';
-      h+=`<div class="oc"><div style="font-weight:600;font-size:13px">${o.desc}</div>
-        <div class="tm" style="color:${col}">${tl}s</div>
+    for(let i=0;i<G.orders.length;i++){const o=G.orders[i];const tl=Math.ceil(o.t),col=tl<30?'var(--dn)':tl<60?'var(--ac)':'var(--ac2)';
+      h+=`<div class="oc"><div style="font-weight:600;font-size:13px">${o.desc}</div><div class="tm" style="color:${col}">${tl}s</div>
         <div style="font-size:11px;margin-top:4px">Reward: <b style="color:#b8860b">${o.rw}🪙</b></div>`;
-      // Check if fulfillable
-      let can=true;
-      if(o.type==='flower'){for(const[fi,ct]of Object.entries(o.req))if(G.inv[fi]<ct)can=false}
-      else{const r=RCP[o.req.recipe];can=canCraftRecipe(r)}
-      h+=`<button class="fb" onclick="fulfillOrder(${i});op('orders')" ${can?'':'disabled'}>
-        ${can?'✅ Fulfill':'Need more items'}</button></div>`}break;
+      let can=true;if(o.type==='flower'){for(const[fi,ct]of Object.entries(o.req))if(G.inv[fi]<ct)can=false}else{const r=RCP[o.req.recipe];can=canCraftRecipe(r)}
+      h+=`<button class="fb" onclick="fulfillOrder(${i});op('orders')" ${can?'':'disabled'}>${can?'✅ Fulfill':'Need more items'}</button></div>`}break;
   case'tools':h+=`<h2>🔧 Tools</h2><button class="pc" onclick="cp()">✕</button>`;
-    for(const t of TOOLS){const cl=G.tools[t.id],mx=cl>=t.mx;
-      const nl=cl+1,cost=mx?0:t.costs[cl],canUP=!mx&&G.coins>=cost&&(t.ul[cl]||0)<=G.level;
-      h+=`<div class="tc"><div class="ti">${t.em}</div><div class="tinf">
-        <div class="tn">${t.nm}</div><div class="td">${t.desc[cl-1]}</div>
-        <div class="tl">Lv ${cl}/${t.mx}</div></div>
-        ${mx?'<button class="ub mx" disabled>MAX</button>':
-        `<button class="ub" onclick="upgradeTool('${t.id}');op('tools')" ${canUP?'':'disabled'}>
-          ${cost}🪙 → Lv${nl}</button>`}</div>`}break;
+    for(const t of TOOLS){const cl=G.tools[t.id],mx=cl>=t.mx;const nl=cl+1,cost=mx?0:t.costs[cl],canUP=!mx&&G.coins>=cost&&(t.ul[cl]||0)<=G.level;
+      h+=`<div class="tc"><div class="ti">${t.em}</div><div class="tinf"><div class="tn">${t.nm}</div><div class="td">${t.desc[cl-1]}</div>
+        <div class="tl">Lv ${cl}/${t.mx}</div></div>${mx?'<button class="ub mx" disabled>MAX</button>':
+        `<button class="ub" onclick="upgradeTool('${t.id}');op('tools')" ${canUP?'':'disabled'}>${cost}🪙 → Lv${nl}</button>`}</div>`}break;
   case'cat':h+=`<h2>🐱 Mochi</h2><button class="pc" onclick="cp()">✕</button>`;
-    const c=G.cat;
-    h+=`<div class="cat-card"><div style="font-size:32px">🐱</div><div style="flex:1">
-      <div style="font-size:10px;color:var(--tl)">Hunger</div><div class="meter mh"><div class="meter-fill" style="width:${c.hunger}%"></div></div>
-      <div style="font-size:10px;color:var(--tl)">Happiness</div><div class="meter mp"><div class="meter-fill" style="width:${c.happy}%"></div></div>
-      <div style="font-size:10px;color:var(--tl)">Trust</div><div class="meter mt"><div class="meter-fill" style="width:${c.trust}%"></div></div>
-      <div style="font-size:9px;color:var(--tl);margin-top:2px">Mood: ${c.mood} | Pet: tap Mochi</div></div></div>`;
+    const cc=G.cat;h+=`<div class="cat-card"><div style="font-size:32px">🐱</div><div style="flex:1">
+      <div style="font-size:10px;color:var(--tl)">Hunger</div><div class="meter mh"><div class="meter-fill" style="width:${cc.hunger}%"></div></div>
+      <div style="font-size:10px;color:var(--tl)">Happiness</div><div class="meter mp"><div class="meter-fill" style="width:${cc.happy}%"></div></div>
+      <div style="font-size:10px;color:var(--tl)">Trust</div><div class="meter mt"><div class="meter-fill" style="width:${cc.trust}%"></div></div>
+      <div style="font-size:9px;color:var(--tl);margin-top:2px">Mood: ${cc.mood}</div></div></div>`;
     h+=`<div class="sl">🍽️ Feed Mochi</div>`;
-    for(const f of CAT_FOOD){h+=`<div class="cat-food" onclick="feedCat('${f.id}');op('cat')">
-      <span style="font-size:20px">${f.em}</span><div style="flex:1"><div style="font-weight:600;font-size:12px">${f.nm}</div>
-      <div style="font-size:9px;color:var(--tl)">+${f.h} hunger, +${f.hp} happy, +${f.tr} trust</div></div>
-      <div style="font-weight:600;font-size:12px;color:#b8860b">${f.cost}🪙</div></div>`}
+    for(const f of CAT_FOOD){h+=`<div class="cat-food" onclick="feedCat('${f.id}');op('cat')"><span style="font-size:20px">${f.em}</span><div style="flex:1"><div style="font-weight:600;font-size:12px">${f.nm}</div>
+      <div style="font-size:9px;color:var(--tl)">+${f.h}hunger +${f.hp}happy +${f.tr}trust</div></div><div style="font-weight:600;font-size:12px;color:#b8860b">${f.cost}🪙</div></div>`}
     h+=`<div class="sl">🎀 Accessories</div><div style="display:flex;flex-wrap:wrap;gap:3px">`;
-    for(const a of CAT_ACC){const owned=c.acc.includes(a.id),eq=c.eq.includes(a.id),locked=a.ul>G.level;
-      h+=`<div class="cat-acc${eq?' eq':''}" onclick="${owned?`toggleCatAcc('${a.id}');op('cat')`:`buyCatAcc('${a.id}');op('cat')`}" 
-        style="${locked?'opacity:.35;pointer-events:none':''}">
-        ${a.em} ${a.nm} ${owned?eq?'✓':'○':`${a.cost}🪙`}${locked?` 🔒${a.ul}`:''}</div>`}
-    h+='</div>';break;
-  case'achieve':h+=`<h2>🏆 Achievements</h2><button class="pc" onclick="cp()">✕</button>
-    <div style="font-size:11px;color:var(--tl);margin-bottom:8px">${G.achievements.size}/${ACHS.length} complete</div>`;
+    for(const a of CAT_ACC){const owned=cc.acc.includes(a.id),eq=cc.eq.includes(a.id),locked=a.ul>G.level;
+      h+=`<div class="cat-acc${eq?' eq':''}" onclick="${owned?`toggleCatAcc('${a.id}');op('cat')`:`buyCatAcc('${a.id}');op('cat')`}" style="${locked?'opacity:.35;pointer-events:none':''}">
+        ${a.em} ${a.nm} ${owned?eq?'✓':'○':`${a.cost}🪙`}${locked?` 🔒${a.ul}`:''}</div>`}h+='</div>';break;
+  case'achieve':h+=`<h2>🏆 Achievements</h2><button class="pc" onclick="cp()">✕</button><div style="font-size:11px;color:var(--tl);margin-bottom:8px">${G.achievements.size}/${ACHS.length}</div>`;
     for(const a of ACHS){const done=G.achievements.has(a.id);
-      h+=`<div class="ach ${done?'done':'todo'}"><span style="font-size:20px">${a.em}</span>
-        <div style="flex:1"><div style="font-weight:600;font-size:12px">${a.nm}${done?' ✅':''}</div>
-        <div style="font-size:10px;color:var(--tl)">${a.desc}</div></div>
-        <div style="font-size:10px;color:#b8860b;font-weight:600">${a.rw}🪙</div></div>`}break;
-  case'inv':h+=`<h2>🎒 Inventory</h2><button class="pc" onclick="cp()">✕</button>`;
-    let hasAny=false;
-    h+=`<div class="ig">`;for(let i=0;i<10;i++){if(G.inv[i]>0){hasAny=true;
-      h+=`<div class="ii" onclick="sellFlower(${i});op('inv')">${FL[i].em} <span class="ct">${G.inv[i]}</span> 
-        <span style="font-size:9px;color:var(--tl)">(tap=sell ${FL[i].sv}🪙)</span></div>`}}
-    if(!hasAny)h+='<div class="et">No flowers yet! Harvest some from your farm.</div>';
-    h+='</div>';
-    h+=`<div class="sl">📊 Stats</div>
-      <div style="font-size:11px;color:var(--tl);line-height:2">
-      🌸 Harvested: ${G.stats.harvested} | 🪙 Earned: ${G.stats.coinsEarned}<br>
-      📋 Orders: ${G.stats.ordersCompleted} | 💐 Bouquets: ${G.stats.bouquetsMade}<br>
-      ⛈️ Storms: ${G.stats.stormsWeathered} | 🍀 Lucky: ${G.stats.luckyHarvests}<br>
-      🐱 Fed: ${G.stats.catFed} | 🎁 Gifts: ${G.stats.giftsRcvd}</div>`;break;
+      h+=`<div class="ach ${done?'done':'todo'}"><span style="font-size:20px">${a.em}</span><div style="flex:1"><div style="font-weight:600;font-size:12px">${a.nm}${done?' ✅':''}</div>
+        <div style="font-size:10px;color:var(--tl)">${a.desc}</div></div><div style="font-size:10px;color:#b8860b;font-weight:600">${a.rw}🪙</div></div>`}break;
+  case'inv':h+=`<h2>🎒 Inventory</h2><button class="pc" onclick="cp()">✕</button><div class="ig">`;let hasAny=false;
+    for(let i=0;i<10;i++){if(G.inv[i]>0){hasAny=true;h+=`<div class="ii" onclick="sellFlower(${i});op('inv')">${FL[i].em} <span class="ct">${G.inv[i]}</span> <span style="font-size:9px;color:var(--tl)">(tap=sell ${FL[i].sv}🪙)</span></div>`}}
+    if(!hasAny)h+='<div class="et">No flowers yet!</div>';h+='</div>';
+    h+=`<div class="sl">📊 Stats</div><div style="font-size:11px;color:var(--tl);line-height:2">🌸 ${G.stats.harvested} | 🪙 ${G.stats.coinsEarned} | 📋 ${G.stats.ordersCompleted} | 💐 ${G.stats.bouquetsMade}<br>⛈️ ${G.stats.stormsWeathered} | 🍀 ${G.stats.luckyHarvests} | 🐱 ${G.stats.catFed} | 🎁 ${G.stats.giftsRcvd}</div>`;break;
   case'guide':h+=renderGuide();break}
-  c.innerHTML=h;const po=document.getElementById('panelO');po.classList.add('on')}
-
+  c.innerHTML=h;document.getElementById('panelO').classList.add('on')}
 function cp(){document.getElementById('panelO').classList.remove('on');G.activePanel=null;SFX.panelClose()}
-function sellFL_shop(fi){// From shop panel - this is seed buying not selling
-  if(FL[fi].ul>G.level||G.coins<FL[fi].sc)return;
-  // If in farm view, plant directly
-  if(G.view==='farm'&&G.sPlot>=0){plantSeed(fi);cp();return}
-  toast(`Go to a farm and tap an empty plot to plant ${FL[fi].em}!`);cp()}
-
-// ══════════════════════════════════════
-// 📖 GAME GUIDE
-// ══════════════════════════════════════
+function sellFL_shop(fi){if(FL[fi].ul>G.level||G.coins<FL[fi].sc)return;
+  if(G.view==='farm'&&G.sPlot>=0){plantSeed(fi);cp();return}toast(`Go to a farm and tap an empty plot to plant ${FL[fi].em}!`);cp()}
 const GUIDE_PAGES=[
-  {title:'🌸 Welcome!',body:`<b>Bloom & Drizzle</b> is a cozy flower farming game!<br><br>
-    🌱 <b>Plant seeds</b> → Watch them grow → 🌸 <b>Harvest flowers</b><br>
-    💐 <b>Craft bouquets</b> → 📋 <b>Fill orders</b> → 🪙 <b>Earn coins</b><br><br>
-    Tap on <b>farms</b> in the village to enter them. Tap empty plots to plant seeds!`},
-  {title:'🌧️ Weather',body:`Weather affects your crops!<br><br>
-    ☀️ <b>Sunny</b> — Normal growth<br>
-    🌦️ <b>Drizzle</b> — +25% growth speed<br>
-    🌧️ <b>Rain</b> — +50% growth speed<br>
-    ⛈️ <b>Storm</b> — 2x growth but risk of damage! Upgrade Storm Shield to protect crops.<br>
-    🌫️ <b>Fog</b> — Normal growth, cozy vibes`},
-  {title:'⭐ Leveling Up',body:`Earn XP to level up and unlock new flowers, recipes, tools & accessories!<br><br>
-    🌸 Harvesting flowers = XP<br>💐 Selling bouquets = XP<br>📋 Completing orders = XP<br>
-    🐱 Petting Mochi = +1 XP<br>🔧 Upgrading tools = +20 XP<br><br>
-    Check your level progress in the top bar!`},
-  {title:'🐱 Mochi the Cat',body:`Mochi follows you everywhere! Keep Mochi happy for bonuses:<br><br>
-    🐟 <b>Feed</b> — Buy food in the Mochi panel<br>
-    💕 <b>Pet</b> — Tap Mochi anywhere for +happiness<br>
-    ☂️ <b>Umbrella</b> — Protects Mochi from rain<br><br>
-    Happy Mochi (>70) = <b>15% lucky harvest</b> chance!<br>
-    High trust + happy = Mochi finds <b>gifts</b> for you! 🎁`},
-  {title:'💡 Tips',body:`• Upgrade <b>Watering Can</b> to auto-water crops<br>
-    • Upgrade <b>Harvest Basket</b> to harvest faster<br>
-    • <b>Bouquets</b> sell for more than individual flowers<br>
-    • <b>Orders</b> pay premium prices — fill them before time runs out!<br>
-    • Buy more <b>farms</b> to grow more flowers<br>
-    • Use <b>⏩ 3x</b> speed in farm view to grow faster<br>
-    • Tap 💀 damaged plots to clear them`},
+  {title:'🌸 Welcome!',body:`<b>Bloom & Drizzle</b> is a cozy flower farming game!<br><br>🌱 <b>Plant seeds</b> → Watch them grow → 🌸 <b>Harvest</b><br>💐 <b>Craft bouquets</b> → 📋 <b>Fill orders</b> → 🪙 <b>Earn coins</b><br><br>Tap <b>farms</b> to enter. Tap empty plots to plant! <b>Drag to pan, pinch to zoom!</b>`},
+  {title:'🌧️ Weather',body:`Weather affects crops!<br><br>☀️ <b>Sunny</b> — Normal<br>🌦️ <b>Drizzle</b> — +25% growth<br>🌧️ <b>Rain</b> — +50% growth<br>⛈️ <b>Storm</b> — 2x growth but damage risk!<br>🌫️ <b>Fog</b> — Normal, cozy vibes`},
+  {title:'⭐ Leveling Up',body:`Earn XP to unlock flowers, recipes, tools & accessories!<br><br>🌸 Harvesting = XP<br>💐 Bouquets = XP<br>📋 Orders = XP<br>🐱 Petting = +1 XP<br>🔧 Upgrading = +20 XP`},
+  {title:'🐱 Mochi',body:`Keep Mochi happy for bonuses!<br><br>🐟 <b>Feed</b> in Mochi panel<br>💕 <b>Pet</b> — tap Mochi<br><br>Happy Mochi (>70) = <b>15% lucky harvest!</b><br>High trust = Mochi finds <b>gifts</b>! 🎁`},
+  {title:'💡 Tips',body:`• Upgrade <b>Watering Can</b> for auto-water<br>• <b>Bouquets</b> > individual flowers<br>• <b>Orders</b> pay premium — fill before timeout!<br>• Buy more <b>farms</b> for more flowers<br>• <b>⏩ 3x</b> speed in farm view<br>• Tap 💀 to clear damaged plots<br>• <b>Drag to pan</b>, <b>pinch/scroll to zoom</b><br>• <b>Double-tap to recenter</b> the view`},
 ];
 function renderGuide(){let h=`<h2>📖 How to Play</h2><button class="pc" onclick="cp()">✕</button>`;
-  const pg=GUIDE_PAGES[G.guidePage];
-  h+=`<div class="guide-page"><h3>${pg.title}</h3><p>${pg.body}</p></div>`;
-  h+=`<div class="guide-nav">`;
-  for(let i=0;i<GUIDE_PAGES.length;i++){
-    h+=`<div class="guide-dot${i===G.guidePage?' active':''}" onclick="G.guidePage=${i};op('guide')"></div>`}
+  const pg=GUIDE_PAGES[G.guidePage];h+=`<div class="guide-page"><h3>${pg.title}</h3><p>${pg.body}</p></div><div class="guide-nav">`;
+  for(let i=0;i<GUIDE_PAGES.length;i++)h+=`<div class="guide-dot${i===G.guidePage?' active':''}" onclick="G.guidePage=${i};op('guide')"></div>`;
   h+=`</div>`;
   if(G.guidePage<GUIDE_PAGES.length-1)h+=`<div style="text-align:center;margin-top:8px"><button class="fb" onclick="G.guidePage++;op('guide')">Next →</button></div>`;
-  else h+=`<div style="text-align:center;margin-top:8px"><button class="fb" onclick="cp()">Let's Play! 🌸</button></div>`;
-  return h}
-
-// ══════════════════════════════════════
-// 🌾 SEED SELECT + PURCHASE POPUP
-// ══════════════════════════════════════
+  else h+=`<div style="text-align:center;margin-top:8px"><button class="fb" onclick="cp()">Let's Play! 🌸</button></div>`;return h}
 function openSeedSel(pi){G.sPlot=pi;G.ssOpen=true;SFX.panelOpen();
-  let h=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-    <span style="font-weight:600;font-size:14px">🌱 Choose Seed</span>
-    <button class="pc" onclick="closeSeedSel()" style="position:static">✕</button></div>`;
+  let h=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-weight:600;font-size:14px">🌱 Choose Seed</span><button class="pc" onclick="closeSeedSel()" style="position:static">✕</button></div>`;
   for(const fl of FL){if(fl.ul>G.level)continue;const can=G.coins>=fl.sc;
-    h+=`<div class="so" onclick="plantSeed(${fl.id})" style="opacity:${can?1:.4}">
-      <span style="font-size:22px">${fl.em}</span>
+    h+=`<div class="so" onclick="plantSeed(${fl.id})" style="opacity:${can?1:.4}"><span style="font-size:22px">${fl.em}</span>
       <div style="flex:1"><div style="font-weight:600;font-size:12px">${fl.nm}</div>
-      <div style="font-size:9px;color:var(--tl)">${fl.gt}s grow time • Sells ${fl.sv}🪙</div></div>
+      <div style="font-size:9px;color:var(--tl)">${fl.gt}s grow • ${fl.sv}🪙</div></div>
       <div style="font-weight:600;color:#b8860b">${fl.sc}🪙</div></div>`}
-  const ss=document.getElementById('seedSel');ss.innerHTML=h;ss.classList.add('on')}
-
+  document.getElementById('seedSel').innerHTML=h;document.getElementById('seedSel').classList.add('on')}
 function closeSeedSel(){G.ssOpen=false;G.sPlot=-1;document.getElementById('seedSel').classList.remove('on')}
-
 function showPurchase(fi){const cost=FCOST[fi];
-  let h=`<h3>🏡 Buy Farm ${fi+1}?</h3><div class="pr">${cost}🪙</div>
+  document.getElementById('purchP').innerHTML=`<h3>🏡 Buy Farm ${fi+1}?</h3><div class="pr">${cost}🪙</div>
     <p style="font-size:11px;color:var(--tl);margin:8px 0">12 plots for growing flowers!</p>
     <div class="pb"><button class="pbtn cf" onclick="buyFarm(${fi});closePurch()" ${G.coins>=cost?'':'disabled'}>Buy</button>
     <button class="pbtn cn" onclick="closePurch()">Cancel</button></div>`;
-  document.getElementById('purchP').innerHTML=h;document.getElementById('purchO').classList.add('on')}
+  document.getElementById('purchO').classList.add('on')}
 function closePurch(){document.getElementById('purchO').classList.remove('on')}
-
-function toast(msg){const c=document.getElementById('toastC'),t=document.createElement('div');
-  t.className='toast';t.textContent=msg;c.appendChild(t);setTimeout(()=>t.remove(),2500)}
+function toast(msg){const c=document.getElementById('toastC'),t=document.createElement('div');t.className='toast';t.textContent=msg;c.appendChild(t);setTimeout(()=>t.remove(),2500)}
 
 // ══════════════════════════════════════
-// 🖱️ INPUT HANDLING
+// 🖱️ INPUT — TAP vs DRAG + PINCH ZOOM (NEW!)
 // ══════════════════════════════════════
-function handleClick(ex,ey){
+let touchState={dragging:false,startX:0,startY:0,startTime:0,lastX:0,lastY:0,pinchDist:0,pinching:false,lastTapTime:0};
+const TAP_THRESHOLD=12,TAP_TIME=300,DOUBLE_TAP_TIME=350;
+
+function handleClick(sx,sy){
   if(G.ssOpen)return;
+  const w=s2w(sx,sy);// convert screen to world
   if(G.view==='village'){
-    // Check if clicked on a farm tile
-    const g=uniso(ex,ey);const gxi=Math.floor(g.gx),gyi=Math.floor(g.gy);
+    const g=uniso(w.x,w.y);const gxi=Math.floor(g.gx),gyi=Math.floor(g.gy);
     if(gxi>=0&&gxi<10&&gyi>=0&&gyi<10){
-      // Move player
       if(VMAP[gyi]&&VMAP[gyi][gxi]!==undefined){
         G.player.gx=gxi;G.player.gy=gyi;
-        const ps=iso(gxi,gyi);G.cat.tx=ps.x+20+Math.random()*20;G.cat.ty=ps.y+Math.random()*10}
-      // Check farm click
+        const ps=iso(gxi,gyi);G.cat.tx=ps.x+20+Math.random()*20;G.cat.ty=ps.y+Math.random()*10;
+        // Smooth camera follow player
+        cam.tx=ps.x;cam.ty=ps.y}
       const fi=FARM_POS.findIndex(f=>f.gx===gxi&&f.gy===gyi);
       if(fi>=0){if(G.farms[fi].unlocked)enterFarm(fi);else showPurchase(fi)}
-      // Check shop click
-      if(VMAP[gyi][gxi]===4){SFX.click();op('shop')}
-    }
-    // Check cat click (bigger radius)
-    const cd=Math.sqrt((ex-G.cat.x)**2+(ey-G.cat.y)**2);
+      if(VMAP[gyi][gxi]===4){SFX.click();op('shop')}}
+    // Cat click
+    const cd=Math.sqrt((w.x-G.cat.x)**2+(w.y-G.cat.y)**2);
     if(cd<40)petCat();
   }else if(G.view==='farm'){
     const farm=G.farms[G.cFarm];
-    for(let i=0;i<12;i++){const p=farm.plots[i];if(!p._sx)continue;
-      const dx=ex-p._sx,dy=ey-p._sy;
-      // Diamond hit test
-      if(Math.abs(dx)/(p._tw/2)+Math.abs(dy)/(p._th/2)<=1){
+    for(let i=0;i<12;i++){const p=farm.plots[i];if(p._sx===undefined)continue;
+      const dx=Math.abs(w.x-p._sx),dy=Math.abs(w.y-p._sy);
+      if(dx<=p._tw/2&&dy<=p._th/2){
         if(p.dmg){harvestPlot(i);return}
         if(p.fi>=0&&p.pr>=1){harvestPlot(i);return}
         if(p.fi<0){openSeedSel(i);return}
-        // Water manually
-        if(p.fi>=0&&!p.wet){p.wet=true;SFX.water();addP('sparkle',p._sx,p._sy,2);return}
-      }}
-    // Cat click in farm
-    const cd=Math.sqrt((ex-G.cat.x)**2+(ey-G.cat.y)**2);
-    if(cd<25)petCat()}}
+        if(p.fi>=0&&!p.wet){p.wet=true;SFX.water();addP('sparkle',p._sx,p._sy,2);return}}}
+    const cd=Math.sqrt((w.x-G.cat.x)**2+(w.y-G.cat.y)**2);
+    if(cd<40)petCat()}}
 
-gc.addEventListener('click',e=>{ensA();handleClick(e.clientX,e.clientY)});
-gc.addEventListener('touchstart',e=>{e.preventDefault();ensA();const t=e.touches[0];handleClick(t.clientX,t.clientY)},{passive:false});
+function getPinchDist(ts){const dx=ts[0].clientX-ts[1].clientX,dy=ts[0].clientY-ts[1].clientY;return Math.sqrt(dx*dx+dy*dy)}
+
+gc.addEventListener('mousedown',e=>{touchState.startX=e.clientX;touchState.startY=e.clientY;touchState.lastX=e.clientX;touchState.lastY=e.clientY;touchState.startTime=Date.now();touchState.dragging=true});
+gc.addEventListener('mousemove',e=>{
+  G.mx=e.clientX;G.my=e.clientY;
+  if(!touchState.dragging)return;
+  const dx=e.clientX-touchState.lastX,dy=e.clientY-touchState.lastY;
+  cam.tx-=dx/cam.zoom;cam.ty-=dy/cam.zoom;
+  touchState.lastX=e.clientX;touchState.lastY=e.clientY});
+gc.addEventListener('mouseup',e=>{
+  if(!touchState.dragging)return;touchState.dragging=false;
+  const dx=e.clientX-touchState.startX,dy=e.clientY-touchState.startY,dist=Math.sqrt(dx*dx+dy*dy);
+  if(dist<TAP_THRESHOLD&&Date.now()-touchState.startTime<TAP_TIME){
+    const now=Date.now();if(now-touchState.lastTapTime<DOUBLE_TAP_TIME){autoZoom()}
+    else{ensA();handleClick(e.clientX,e.clientY)}
+    touchState.lastTapTime=now}});
+gc.addEventListener('wheel',e=>{e.preventDefault();
+  const zf=e.deltaY>0?.9:1.1;cam.tz=Math.max(.4,Math.min(3,cam.tz*zf))},{passive:false});
+
+gc.addEventListener('touchstart',e=>{
+  e.preventDefault();ensA();
+  if(e.touches.length===2){touchState.pinching=true;touchState.pinchDist=getPinchDist(e.touches);return}
+  const t=e.touches[0];touchState.startX=t.clientX;touchState.startY=t.clientY;touchState.lastX=t.clientX;touchState.lastY=t.clientY;touchState.startTime=Date.now();touchState.dragging=true},{passive:false});
+gc.addEventListener('touchmove',e=>{
+  e.preventDefault();
+  if(touchState.pinching&&e.touches.length>=2){const d=getPinchDist(e.touches);const ratio=d/touchState.pinchDist;
+    cam.tz=Math.max(.4,Math.min(3,cam.zoom*ratio));touchState.pinchDist=d;return}
+  if(!touchState.dragging||e.touches.length!==1)return;
+  const t=e.touches[0];G.mx=t.clientX;G.my=t.clientY;
+  const dx=t.clientX-touchState.lastX,dy=t.clientY-touchState.lastY;
+  cam.tx-=dx/cam.zoom;cam.ty-=dy/cam.zoom;
+  touchState.lastX=t.clientX;touchState.lastY=t.clientY},{passive:false});
+gc.addEventListener('touchend',e=>{
+  if(touchState.pinching){if(e.touches.length<2)touchState.pinching=false;return}
+  if(!touchState.dragging)return;touchState.dragging=false;
+  const dx=(e.changedTouches[0]?.clientX||0)-touchState.startX,dy=(e.changedTouches[0]?.clientY||0)-touchState.startY;
+  const dist=Math.sqrt(dx*dx+dy*dy);
+  if(dist<TAP_THRESHOLD&&Date.now()-touchState.startTime<TAP_TIME){
+    const now=Date.now();if(now-touchState.lastTapTime<DOUBLE_TAP_TIME){autoZoom()}
+    else{handleClick(e.changedTouches[0].clientX,e.changedTouches[0].clientY)}
+    touchState.lastTapTime=now}});
 document.addEventListener('mousemove',e=>{G.mx=e.clientX;G.my=e.clientY});
-document.addEventListener('touchmove',e=>{const t=e.touches[0];G.mx=t.clientX;G.my=t.clientY});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(G.ssOpen)closeSeedSel();else if(G.activePanel)cp();else if(G.view==='farm')exitFarm()}});
 
 // ══════════════════════════════════════
@@ -993,24 +986,22 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(G.ssOpen)closeSe
 let lastT=0;
 function gameLoop(ts){
   const dt=Math.min((ts-lastT)/1000,.05);lastT=ts;G.time=ts/1000;
-  // Update
   updWeather(dt);updGrowth(dt);updStorm(dt);updDay(dt);updOrders(dt);updCat(dt);updRain(dt);updParts(dt);
-  // Render
+  camLerp(dt);
   gx.clearRect(0,0,W,H);
   if(G.view==='village')drawVillage();else drawFarmView();
   drawRain();
-  // Fog overlay
-  if(G.weather.id==='fog'){gx.fillStyle='rgba(200,195,210,.15)';gx.fillRect(0,0,W,H)}
-  // Warm light overlay (subtle)
+  // Fog overlay (screen space)
+  if(G.weather.id==='fog'){
+    const fg=gx.createRadialGradient(W/2,H/2,W*.15,W/2,H/2,W*.6);
+    fg.addColorStop(0,'rgba(200,195,210,0)');fg.addColorStop(1,'rgba(200,195,210,.35)');
+    gx.fillStyle=fg;gx.fillRect(0,0,W,H)}
   if(G.weather.id==='sunny'){gx.fillStyle='rgba(255,240,200,.06)';gx.fillRect(0,0,W,H)}
   requestAnimationFrame(gameLoop)}
 
 // ══════════════════════════════════════
 // 🚀 INIT
 // ══════════════════════════════════════
-function init(){resize();updUI();
-  // Show guide on first load
-  setTimeout(()=>op('guide'),800);
-  requestAnimationFrame(gameLoop)}
+function init(){resize();updUI();setTimeout(()=>op('guide'),800);requestAnimationFrame(gameLoop)}
 init();
 </script></body></html>
