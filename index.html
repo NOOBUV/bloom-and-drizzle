@@ -210,6 +210,68 @@ const G={coins:250,day:1,dayT:0,tt:0,xp:0,level:1,inv:new Array(10).fill(0),
   achievements:new Set(),mx:0,my:0,ssOpen:false,sPlot:-1,activePanel:null,guidePage:0};
 
 // ══════════════════════════════════════
+// 💾 SAVE / LOAD (localStorage)
+// ══════════════════════════════════════
+const SAVE_KEY='bloom_drizzle_save';
+const SAVE_INTERVAL=10;// auto-save every 10 seconds
+let saveTimer=0;
+
+function saveGame(){
+  try{
+    const s={
+      coins:G.coins,day:G.day,dayT:G.dayT,tt:G.tt,xp:G.xp,level:G.level,
+      inv:[...G.inv],
+      farms:G.farms.map(f=>({unlocked:f.unlocked,plots:f.plots.map(p=>({fi:p.fi,pr:p.pr,wet:p.wet,dmg:p.dmg}))})),
+      tools:{...G.tools},
+      weatherId:G.weather.id,wT:G.wT,wDur:G.wDur,stormCt:G.stormCt,
+      orders:G.orders.map(o=>({type:o.type,desc:o.desc,req:{...o.req},rw:o.rw,tl:o.tl,t:o.t})),
+      oCd:G.oCd,bSlots:[...G.bSlots],
+      cat:{hunger:G.cat.hunger,happy:G.cat.happy,trust:G.cat.trust,
+        acc:[...G.cat.acc],eq:[...G.cat.eq],mood:G.cat.mood,
+        feedCt:G.cat.feedCt,petCt:G.cat.petCt},
+      player:{gx:G.player.gx,gy:G.player.gy},
+      stats:{harvested:G.stats.harvested,coinsEarned:G.stats.coinsEarned,
+        ordersCompleted:G.stats.ordersCompleted,bouquetsMade:G.stats.bouquetsMade,
+        stormsWeathered:G.stats.stormsWeathered,luckyHarvests:G.stats.luckyHarvests,
+        catFed:G.stats.catFed,giftsRcvd:G.stats.giftsRcvd,
+        recipeCrafted:[...G.stats.recipeCrafted]},
+      achievements:[...G.achievements],
+      v:1 // save version for future compatibility
+    };
+    localStorage.setItem(SAVE_KEY,JSON.stringify(s));
+  }catch(e){console.warn('Save failed:',e)}
+}
+
+function loadGame(){
+  try{
+    const raw=localStorage.getItem(SAVE_KEY);
+    if(!raw)return false;
+    const s=JSON.parse(raw);
+    G.coins=s.coins;G.day=s.day;G.dayT=s.dayT||0;G.tt=s.tt||0;
+    G.xp=s.xp;G.level=s.level;
+    G.inv=s.inv;
+    G.farms=s.farms.map(f=>({unlocked:f.unlocked,plots:f.plots.map(p=>({fi:p.fi,pr:p.pr,wet:p.wet,dmg:p.dmg}))}));
+    G.tools=s.tools;
+    G.weather=WS.find(w=>w.id===s.weatherId)||WS[0];
+    G.wT=s.wT;G.wDur=s.wDur;G.stormCt=s.stormCt;
+    G.orders=s.orders||[];G.oCd=s.oCd||0;G.bSlots=s.bSlots||[];
+    G.cat.hunger=s.cat.hunger;G.cat.happy=s.cat.happy;G.cat.trust=s.cat.trust;
+    G.cat.acc=s.cat.acc||[];G.cat.eq=s.cat.eq||[];G.cat.mood=s.cat.mood||'idle';
+    G.cat.feedCt=s.cat.feedCt||0;G.cat.petCt=s.cat.petCt||0;
+    G.player.gx=s.player.gx;G.player.gy=s.player.gy;
+    G.stats.harvested=s.stats.harvested;G.stats.coinsEarned=s.stats.coinsEarned;
+    G.stats.ordersCompleted=s.stats.ordersCompleted;G.stats.bouquetsMade=s.stats.bouquetsMade;
+    G.stats.stormsWeathered=s.stats.stormsWeathered;G.stats.luckyHarvests=s.stats.luckyHarvests;
+    G.stats.catFed=s.stats.catFed;G.stats.giftsRcvd=s.stats.giftsRcvd;
+    G.stats.recipeCrafted=new Set(s.stats.recipeCrafted||[]);
+    G.achievements=new Set(s.achievements||[]);
+    return true;
+  }catch(e){console.warn('Load failed:',e);return false}
+}
+
+window.addEventListener('beforeunload',saveGame);
+
+// ══════════════════════════════════════
 // 📷 CAMERA SYSTEM (NEW!)
 // ══════════════════════════════════════
 const cam={x:0,y:0,zoom:1,tx:0,ty:0,tz:1};
@@ -987,6 +1049,7 @@ let lastT=0;
 function gameLoop(ts){
   const dt=Math.min((ts-lastT)/1000,.05);lastT=ts;G.time=ts/1000;
   updWeather(dt);updGrowth(dt);updStorm(dt);updDay(dt);updOrders(dt);updCat(dt);updRain(dt);updParts(dt);
+  saveTimer-=dt;if(saveTimer<=0){saveTimer=SAVE_INTERVAL;saveGame()}
   camLerp(dt);
   gx.clearRect(0,0,W,H);
   if(G.view==='village')drawVillage();else drawFarmView();
@@ -1002,6 +1065,6 @@ function gameLoop(ts){
 // ══════════════════════════════════════
 // 🚀 INIT
 // ══════════════════════════════════════
-function init(){resize();updUI();setTimeout(()=>op('guide'),800);requestAnimationFrame(gameLoop)}
+function init(){resize();const loaded=loadGame();updUI();if(!loaded)setTimeout(()=>op('guide'),800);requestAnimationFrame(gameLoop)}
 init();
 </script></body></html>
